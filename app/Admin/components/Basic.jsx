@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 import { supabase } from "@/lib/supabase";
 
 import { Typography, Input, Button } from "@material-tailwind/react";
 import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/solid";
 
-export  function Basic() {
+export function Basic() {
   const router = useRouter();
 
   const [passwordShown, setPasswordShown] = useState(false);
@@ -18,8 +19,9 @@ export  function Basic() {
 
   const [loading, setLoading] = useState(false);
 
-  const togglePasswordVisiblity = () =>
-    setPasswordShown((cur) => !cur);
+  const togglePasswordVisiblity = () => {
+    setPasswordShown((prev) => !prev);
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -31,99 +33,103 @@ export  function Basic() {
       email,
       password,
     });
-    console.log(data.user.id);
 
     if (error) {
-      alert(error.message);
+      Swal.fire({
+        icon: "error",
+        title: "Login Failed",
+        text: "Invalid email or password.",
+      });
+
       setLoading(false);
       return;
     }
-  
-    // Check Role
-    const { data: admin, error: roleError } = await supabase
-  .from("admins")
-  .select("*")
-  .eq("user_id", data.user.id);
 
-    console.log("Admin Data:", admin);
-    console.log("Role Error:", roleError);
+    // Check Admin Role
+    const { data: admin, error: roleError } = await supabase
+      .from("admins")
+      .select("role")
+      .eq("user_id", data.user.id)
+      .single();
 
     if (roleError || !admin) {
-      alert("You are not authorized.");
-
       await supabase.auth.signOut();
+
+      Swal.fire({
+        icon: "error",
+        title: "Access Denied",
+        text: "You are not authorized.",
+      });
 
       setLoading(false);
       return;
     }
-    console.log(admin)
-    console.log(admin.role);
 
-    if (admin.role === "admin") {
-      router.push("/admin/dashboard");
-      return;
+    switch (admin.role) {
+      case "super_admin":
+        router.push("/admin/dashboard");
+        break;
+
+      case "admin":
+        router.push("/admin/dashboard");
+        break;
+
+      default:
+        await supabase.auth.signOut();
+
+        Swal.fire({
+          icon: "error",
+          title: "Unknown Role",
+          text: "Your account doesn't have a valid role.",
+        });
+
+        setLoading(false);
+        return;
     }
-
-    if (admin.role === "admin") {
-      router.push("/admin/dashboard");
-      return;
-    }
-
-    alert("Unknown Role");
-
-    setLoading(false);
   };
 
   return (
-    <section className="grid text-center h-screen items-center p-8">
+    <section className="grid h-screen place-items-center p-8">
       <div>
         <Typography variant="h3" color="blue-gray" className="mb-2">
           Sign In
         </Typography>
 
-        <Typography className="mb-16 text-gray-600 font-normal text-[18px]">
+        <Typography className="mb-12 text-gray-600 text-lg">
           Enter your email and password to sign in
         </Typography>
 
         <form
           onSubmit={handleLogin}
-          className="mx-auto max-w-[24rem] text-left"
+          className="mx-auto max-w-sm text-left"
         >
           <div className="mb-6">
-            <label>
-              <Typography
-                variant="small"
-                className="mb-2 block font-medium"
-              >
-                Email
-              </Typography>
-            </label>
+            <Typography variant="small" className="mb-2 font-medium">
+              Email
+            </Typography>
 
             <Input
               type="email"
               size="lg"
+              placeholder="name@mail.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="name@mail.com"
+              required
             />
           </div>
 
           <div className="mb-6">
-            <label>
-              <Typography
-                variant="small"
-                className="mb-2 block font-medium"
-              >
-                Password
-              </Typography>
-            </label>
+            <Typography variant="small" className="mb-2 font-medium">
+              Password
+            </Typography>
 
             <Input
               size="lg"
               type={passwordShown ? "text" : "password"}
+              placeholder="********"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="********"
+              required
               icon={
                 <button
                   type="button"
@@ -151,5 +157,5 @@ export  function Basic() {
       </div>
     </section>
   );
-}
+} 
 export default Basic;
