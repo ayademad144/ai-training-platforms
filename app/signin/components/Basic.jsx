@@ -4,7 +4,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
+
+const supabase = createClient();
 
 import { Typography, Input, Button } from "@material-tailwind/react";
 import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/solid";
@@ -33,6 +35,7 @@ export function Basic() {
       email,
       password,
     });
+    console.log(data.session);
 
     if (error) {
       Swal.fire({
@@ -66,12 +69,9 @@ export function Basic() {
     }
 
     switch (admin.role) {
-      case "super_admin":
-        router.push("/admin/dashboard");
-        break;
-
+      
       case "admin":
-        router.push("/admin/dashboard");
+        router.push("/dashboard");
         break;
 
       default:
