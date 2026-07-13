@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# AI Training Platforms
 
-## Getting Started
+AI Training Platforms is a modern web application that helps users discover AI training, data annotation, search evaluation, and remote AI job opportunities in one place.
 
-First, run the development server:
+## Features
+
+- Browse AI training platforms
+- Compare platform requirements
+- View payment methods and rates
+- Read application guides
+- Search and filter platforms
+- Responsive modern UI
+- SEO optimized
+- Admin dashboard for managing content
+
+## Tech Stack
+
+- Next.js 16
+- React 19
+- Tailwind CSS
+- Material Tailwind
+- Supabase
+- JavaScript
+
+## Installation
+
+```bash
+npm install
+```
+
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open:
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+```
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project Structure
 
-## Learn More
+```
+app/
+ ├── admin/
+ ├── components/
+ ├── platforms/
+ ├── guides/
+ ├── about/
+ ├── contact/
+ └── page.jsx
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Future Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Authentication
+- Favorites
+- Platform Reviews
+- Newsletter
+- Multi-language (English & Arabic)
+- Admin Dashboard
+- Search & Filters
+- SEO Optimization
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## License
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
