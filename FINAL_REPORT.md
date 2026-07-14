@@ -2,21 +2,25 @@
 
 ## Project overview
 
-AI Training Models is a production-structured directory homepage built with Next.js 16.2.10, React 19.2.4, Tailwind CSS 4.3.2, and the App Router. The Figma/Vite project was used only as a visual reference; its routing, architecture, and folder structure were not copied.
+AI Training Platforms is a production-structured directory application built with Next.js 15.5.20, React 18.3.1, Tailwind CSS 3.4.19, and the App Router. The completed marketing UI, Supabase sign-in flow, and protected dashboard behavior remain intact after merge resolution and dependency compatibility work.
 
-The completed homepage is composed primarily of static Server Components, with narrow Client Components only where local interaction is required.
+The repository is JavaScript-only. It uses Server Components by default, narrow client boundaries for interaction, centralized static content, optimized Next.js fonts/images, generated metadata routes, and public Supabase SSR APIs.
 
 ## Project architecture
 
-- `app/layout.js` owns global metadata, optimized fonts, global CSS, language, and the document shell.
-- `app/(marketing)/layout.js` owns shared public-site chrome: keyboard skip navigation, Header, and Footer.
-- `app/(marketing)/page.jsx` composes the homepage sections in reference order.
-- `components/home` contains section and card components.
+- `app/layout.js` owns the document shell, root metadata, optimized font variables, and global CSS.
+- `app/(marketing)/layout.js` composes public-site chrome: skip navigation, Header, and Footer.
+- `app/(marketing)/page.jsx` composes homepage sections in the approved visual order.
+- `app/signin` contains the client authentication form inside a server-rendered page shell.
+- `app/dashboard/layout.jsx` performs the server-side admin authorization gate.
+- `middleware.js` refreshes Supabase sessions and protects dashboard requests before route rendering.
+- `components/home` contains homepage sections and reusable cards.
 - `components/layout` contains navigation, Footer, and shared route-state UI.
-- `data` contains static render data and keeps repeated content out of JSX.
-- `lib/site-config.js` resolves canonical deployment URLs and centralizes SEO identity.
-- `lib/supabase.js` is preserved existing business infrastructure and is not imported by the current homepage.
-- TypeScript is enabled incrementally for the requested metadata routes while existing JavaScript remains supported.
+- `data` contains repeated static content outside JSX.
+- `lib/site-config.js` centralizes SEO identity and canonical URL resolution.
+- `lib/supabase` separates browser, server, and middleware session clients.
+- `jsconfig.json` supplies the `@/*` alias without TypeScript tooling.
+- `scripts/next15-build.cjs` enables Next.js 15 worker-thread validation in this restricted Windows environment.
 
 ## Folder tree
 
@@ -25,17 +29,23 @@ app/
   (marketing)/
     layout.js
     page.jsx
-  Admin/page.jsx
+  dashboard/
+    layout.jsx
+    page.jsx
+  signin/
+    components/
+      Basic.jsx
+    page.jsx
   error.jsx
   fonts.js
   globals.css
   layout.js
   loading.jsx
-  manifest.ts
+  manifest.js
   not-found.jsx
   opengraph-image.jsx
-  robots.ts
-  sitemap.ts
+  robots.js
+  sitemap.js
   twitter-image.jsx
 components/
   home/
@@ -67,167 +77,177 @@ data/
   guides.js
   platforms.js
 lib/
+  auth.js
   site-config.js
-  supabase.js
+  supabase/
+    client.js
+    middleware.js
+    server.js
 public/
-  brand/ai-training-models.svg
+  brand/
+    ai-training-models.svg
+scripts/
+  next15-build.cjs
+middleware.js
+jsconfig.json
+tailwind.config.js
 ```
 
 ## Components
 
 | Area | Components | Responsibility |
 | --- | --- | --- |
-| Shared layout | `SiteHeader`, `Navbar`, `NavigationLinks` | Branding, primary navigation, active state, mobile menu, and language label control |
-| Footer | `Footer`, `FooterColumn`, `SocialLinks` | Semantic Footer, reusable link columns, and reference social labels |
-| Route states | `RouteStatus`, `Loading`, `Error`, `NotFound` | Consistent loading, recovery, and 404 experiences |
+| Shared layout | `SiteHeader`, `Navbar`, `NavigationLinks` | Brand, primary navigation, active state, mobile menu, and language-label control |
+| Footer | `Footer`, `FooterColumn`, `SocialLinks` | Semantic Footer, mapped link columns, and reference social labels |
+| Route states | `RouteStatus`, `Loading`, `Error`, `NotFound` | Loading, recovery, and custom 404 experiences |
 | Hero | `Hero`, `HeroPlatformPreview` | Primary heading, calls to action, and reviewed-platform preview |
-| Highlights | `Categories`, `CategoryCard` | Directory trust statistics |
-| Platforms | `PlatformsGrid`, `PlatformCard`, private `StarRating` | Category filtering and reusable platform summaries |
+| Highlights | `Categories`, `CategoryCard` | Directory statistics and trust signals |
+| Platforms | `PlatformsGrid`, `PlatformCard` | Category filtering and reusable platform summaries |
 | Benefits | `Features`, `FeatureCard` | Reusable benefit cards |
-| Guides | `LatestGuides`, `GuideCard` | Guide preview grid with responsive optimized images |
+| Guides | `LatestGuides`, `GuideCard` | Guide preview grid with optimized imagery |
 | Newsletter | `Newsletter`, `NewsletterForm` | Newsletter presentation and local confirmation state |
+| Authentication | `Basic` | Email/password sign-in, password visibility, role validation, and feedback dialogs |
 
 ## Pages and routes
 
-| Route | Type | Status |
+| Route | Rendering | Status |
 | --- | --- | --- |
-| `/` | Marketing page | Complete and indexable |
-| `/Admin` | Existing route | Preserved unchanged and excluded from `robots.txt` |
-| `/sitemap.xml` | Metadata route | Includes only the implemented homepage |
-| `/robots.txt` | Metadata route | Allows public crawling and disallows `/Admin` |
-| `/manifest.webmanifest` | Metadata route | Brand name, colors, start URL, scope, and SVG icon |
-| `/opengraph-image` | Generated image route | Static 1200×630 PNG |
-| `/twitter-image` | Generated image route | Static 1200×630 PNG |
-| Unmatched routes | Custom 404 | Returns 404 and includes `noindex` |
-
-Linked platform, guide, company, policy, FAQ, blog, and newsletter pages are future scope and currently resolve to the custom 404.
+| `/` | Static | Complete marketing homepage and indexable |
+| `/signin` | Static shell + client form | Supabase authentication; no-index |
+| `/dashboard` | Dynamic | Protected server route; admin-only and no-index |
+| `/sitemap.xml` | Static metadata route | Includes the implemented homepage |
+| `/robots.txt` | Static metadata route | Allows public content and blocks private/auth routes |
+| `/manifest.webmanifest` | Static metadata route | Brand, colors, start URL, scope, and SVG icon |
+| `/opengraph-image` | Generated static image | 1200 by 630 PNG |
+| `/twitter-image` | Generated static image | 1200 by 630 PNG |
+| Unmatched routes | Custom 404 | Returns the project not-found experience |
 
 ## Data files
 
-- `data/categories.js`: directory statistics.
-- `data/platforms.js`: platform filters and platform card content.
+- `data/categories.js`: category/statistic card content.
+- `data/platforms.js`: platform filter names and platform-card content.
 - `data/features.js`: benefit-card content.
 - `data/guides.js`: guide-card content and image sources.
 - `data/footer.js`: Footer brand, navigation columns, social labels, and copyright.
 
 ## Client Components
 
-- `Navbar`: requires state, effects, pathname access, and keyboard handling.
-- `PlatformsGrid`: requires local category-filter state.
-- `NewsletterForm`: requires controlled form and confirmation state.
-- `app/error.jsx`: Next.js error boundaries must be Client Components.
+- `components/layout/navbar.jsx`: pathname state, mobile-menu state, keyboard handling, and language label.
+- `components/home/platforms-grid.jsx`: local platform-category filtering.
+- `components/home/newsletter-form.jsx`: controlled form and confirmation state.
+- `app/signin/components/Basic.jsx`: authentication state and browser Supabase client.
+- `app/error.jsx`: Next.js error boundary and retry interaction.
 
-No other component ships a client boundary.
+All other application components are Server Components or server-only modules unless pulled into an explicit client boundary.
 
-## Server Components
+## JavaScript and compatibility migration
 
-All homepage sections, cards, layouts, Footer components, loading UI, and not-found UI remain Server Components. Static data is rendered on the server, reducing client JavaScript and hydration work.
+- Converted metadata route modules from `.ts` to `.js` and removed TypeScript-only syntax.
+- Removed `tsconfig.json` and `next-env.d.ts`; retained `jsconfig.json` for aliases.
+- Confirmed no project `.ts`, `.tsx`, or `.d.ts` files remain.
+- Resolved all source merge markers and duplicate package entries.
+- Reconciled the manifest and lockfile to the exact dependency ranges supplied by the user.
+- Restored Next.js 15 `middleware.js` in place of the Next.js 16 proxy convention.
+- Replaced Tailwind CSS 4 CSS-first directives with Tailwind CSS 3 configuration and PostCSS plugins.
+- Replaced Tailwind 4-only theme variables in global styles with equivalent fixed values.
+- Configured ESLint 9 to consume the Next.js 15 core-web-vitals rules.
+- Preserved authentication, authorization, metadata, UI, and responsive behavior.
 
 ## Performance summary
 
-- The homepage is eligible for static prerendering and does not use request-time APIs.
-- Client boundaries are limited to three interactive UI components plus the required error boundary.
-- Inter and Plus Jakarta Sans are self-hosted and optimized by `next/font`; no browser request is made to Google Fonts.
-- The above-fold 32×32 logo uses eager loading without the deprecated Next 16 `priority` prop.
-- Footer and guide images use native lazy loading by default.
-- Guide images use `fill`, a reserved aspect-ratio container, and precise responsive `sizes` values to reduce oversized downloads.
-- Remote image optimization is restricted to HTTPS Unsplash photo paths.
-- Social images are statically generated and cached by Next.js.
-- `@material-tailwind/react` and its unnecessary React 18 subtree were removed.
-- No bundle-analyzer dependency or other runtime library was added.
+- The marketing homepage is statically prerendered.
+- Client boundaries remain restricted to the five files that require interaction or recovery.
+- Inter and Plus Jakarta Sans are self-hosted through `next/font` with Latin subsets and `swap` display.
+- Above-fold branding loads eagerly; below-fold images retain default lazy loading.
+- Guide images use `fill`, reserved dimensions, and responsive `sizes` values.
+- Remote image optimization is limited to the required HTTPS Unsplash path pattern.
+- Static data is rendered on the server; repeated cards use arrays and `map()`.
+- The production build completes with a 102 kB shared first-load JavaScript baseline; the homepage route reports 115 kB first-load JavaScript.
 
 ## SEO summary
 
-- Descriptive title with a reusable template.
-- Search-focused description and keywords.
-- Application name, author, creator, publisher, and category.
-- `metadataBase` and canonical URL resolution from deployment environment variables.
-- Index/follow directives and expanded Googlebot preview permissions.
-- Open Graph title, description, URL, locale, site name, type, image, dimensions, type, and alt text.
-- Twitter large-image card with matching title, description, image, and alt text.
-- Brand icon and web-app manifest metadata.
-- Sitemap containing only the implemented public route.
-- Robots endpoint referencing the canonical sitemap and excluding `/Admin`.
-- Custom 404 verified with automatic `noindex` metadata.
+- Root metadata includes title/template, description, keywords, authors, creator, publisher, category, robots, canonical alternates, icon, manifest, Open Graph, and Twitter data.
+- Canonical URLs resolve from `SITE_URL`, `NEXT_PUBLIC_SITE_URL`, Vercel production variables, or localhost in development.
+- Sitemap, robots, manifest, Open Graph image, and Twitter image routes build successfully.
+- Sign-in and dashboard routes specify no-index/no-follow metadata and are disallowed in `robots.txt`.
+- The custom not-found route supplies correct 404 behavior.
 
 ## Accessibility summary
 
-- Semantic Header, navigation, main, sections, articles, lists, definitions, forms, and Footer landmarks.
-- Keyboard skip link targeting the focusable main content.
-- Accessible mobile-menu labels, expanded state, controls relationship, and Escape handling.
-- Active navigation exposes `aria-current="page"`.
-- Category filters expose pressed state and a named control group.
-- Form input has an explicit label, type, autocomplete, and required validation.
-- Newsletter confirmation uses a status announcement.
-- Error recovery is keyboard-operable; loading feedback uses polite status semantics.
-- Decorative icons and repeated logo graphics are hidden from assistive technology where adjacent text provides the name.
-- Star ratings expose a textual accessible name.
-- Motion-sensitive image animation and loading animation honor reduced-motion preferences.
-- Global focus-visible styling remains enabled.
+- Semantic Header, navigation, main, section, article, form, and Footer landmarks are retained.
+- Marketing pages provide a keyboard skip link.
+- Mobile navigation includes accessible labels, expanded/control relationships, active-route state, and Escape handling.
+- Category filters expose a group label and pressed state.
+- Sign-in fields use explicit labels, autocomplete values, required validation, and an accessible password-visibility toggle.
+- Error, loading, and newsletter feedback expose status/recovery semantics.
+- Decorative icons are hidden from assistive technology where adjacent text supplies meaning.
+- Global focus-visible behavior remains enabled.
 
 ## Dependencies
 
-### Runtime dependencies
+### Runtime
 
-- `next` 16.2.10
-- `react` and `react-dom` 19.2.4
-- `@heroicons/react` 2.2.0
-- `@supabase/supabase-js` 2.110.3
+- `next` `15.5.20`
+- `react` `18.3.1`
+- `react-dom` `18.3.1`
+- `@heroicons/react` `2.2.0`
+- `@material-tailwind/react` `2.1.10`
+- `@supabase/ssr` `0.12.1`
+- `@supabase/supabase-js` `2.110.3`
+- `sweetalert2` `11.26.25`
 
-### Development dependencies
+### Development
 
-- Tailwind CSS and `@tailwindcss/postcss` 4.3.2
-- TypeScript 6.0.3
-- `@types/node` 26.1.1
-- `@types/react` 19.2.17
-- ESLint 9.39.5
-- `eslint-config-next` 16.2.10
+- `tailwindcss` `3.4.19`
+- `postcss` `8.5.19`
+- `autoprefixer` `10.5.2`
+- `eslint` `9.39.5` (resolved from `^9`)
+- `eslint-config-next` `15.5.20`
 
 ## Validation summary
 
-- ESLint: passed.
-- Strict TypeScript check: passed.
-- Whitespace and conflict-marker checks: passed.
-- Next.js optimized compilation: passed.
-- Runtime endpoint and content-type smoke tests: passed.
-- Rendered metadata inspection: passed.
-- Custom 404 status, copy, and `noindex`: passed.
-- Final local build completion: blocked after successful compilation by the documented Windows `spawn EPERM` subprocess limitation.
+- `npm install`: passed.
+- `npm run lint`: passed with no ESLint warnings or errors.
+- `npm run build`: passed with Next.js 15.5.20.
+- `npm ls --depth=0`: clean and limited to the requested root dependencies.
+- Source merge-marker scan: passed.
+- JavaScript-only source scan: passed.
+- Unsupported newer-version API scan: passed.
+- Production-server smoke tests passed: public/generated routes returned `200`, a missing route returned `404`, and an unauthenticated dashboard request returned `307`.
 
-## Known limitations
+## Known limitations and warnings
 
-- Several design links intentionally target future routes that are not implemented.
-- Newsletter submission is local UI only.
-- Full Arabic localization is not implemented.
-- Social account URLs were not provided and were not invented.
-- A production canonical URL must be supplied through `SITE_URL` or `NEXT_PUBLIC_SITE_URL`.
-- The local Windows environment cannot complete Next's final build subprocess even though compilation and standalone type checking pass.
-- npm reports a moderate PostCSS advisory through Next.js 16.2.10. The available automated fix proposes an unsafe Next 9 downgrade and was not applied.
+- Supabase sign-in and dashboard authorization require `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+- Platform, guide, company, policy, FAQ, blog, and newsletter destination pages remain future scope.
+- Newsletter submission remains a local confirmation UI.
+- Full localization and verified social profile URLs are not implemented.
+- Production must define a canonical site URL.
+- `npm audit` reports two moderate advisories caused by the PostCSS copy bundled inside the required Next.js 15.5.20. npm's proposed forced replacement violates the approved versions and was not applied.
+- Next.js logs a non-fatal Supabase Edge Runtime warning for `process.version` exposed through the required public SSR package entry point.
+- Webpack logs non-fatal cache serialization warnings for large strings.
+- Source conflicts are resolved, but this sandbox cannot update `.git/index`; run `git add package.json package-lock.json app/globals.css` locally to clear the historical unmerged index entries.
 
 ## Future improvements
 
-These items are not part of the approved project and require new scope:
+These require new approval and are not part of the completed migration:
 
-- Implement the linked platform, guide, company, policy, FAQ, blog, and newsletter routes.
-- Connect newsletter and content workflows to Supabase.
-- Add real localization with translated content and locale-aware routes.
-- Add verified social-profile destinations.
-- Add application monitoring, analytics, and field Core Web Vitals reporting.
-- Apply a compatible Next.js/PostCSS security update when available.
+- Implement linked content routes.
+- Connect newsletter persistence and content workflows.
+- Add locale-aware routes and translated content.
+- Add verified social destinations.
+- Add monitoring, analytics, and field Core Web Vitals reporting.
+- Apply a compatible security update when one is available within the approved dependency ranges.
 
 ## Deployment checklist
 
 - [ ] Use Node.js 20.9 or newer.
-- [ ] Set `SITE_URL` to the final HTTPS origin. `NEXT_PUBLIC_SITE_URL` is also supported.
-- [ ] Store environment variables in the deployment platform; do not commit `.env` files.
+- [ ] Define `SITE_URL` or `NEXT_PUBLIC_SITE_URL` with the final HTTPS origin.
+- [ ] Define `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+- [ ] Keep environment values in the deployment platform; do not commit `.env` files.
 - [ ] Run `npm ci` from the committed lockfile.
-- [ ] Run `npm run lint`.
-- [ ] Run `npx tsc --noEmit`.
-- [ ] Run `npm run build` in CI or the deployment environment and require a successful exit.
-- [ ] Start the production server with `npm run start` when using a Node deployment.
-- [ ] Verify `/`, `/sitemap.xml`, `/robots.txt`, `/manifest.webmanifest`, social images, and an unmatched URL.
-- [ ] Confirm canonical and social-image URLs use the production domain.
-- [ ] Test keyboard navigation, mobile-menu Escape behavior, form validation, and focus visibility.
+- [ ] Run `npm run lint` and `npm run build` as required CI gates.
+- [ ] Verify homepage, sign-in, authorized/unauthorized dashboard behavior, metadata endpoints, social images, and custom 404.
+- [ ] Confirm canonical/social URLs use the production domain.
+- [ ] Test keyboard navigation, mobile-menu Escape behavior, forms, focus visibility, and responsive layouts.
 - [ ] Run Lighthouse against the deployed HTTPS URL.
-- [ ] Submit the production sitemap to the relevant search-engine webmaster tools.
-- [ ] Re-run `npm audit` and review the upstream PostCSS advisory without applying breaking forced downgrades.
+- [ ] Submit the production sitemap to search-engine webmaster tools.

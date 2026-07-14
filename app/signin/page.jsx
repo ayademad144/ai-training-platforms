@@ -1,15 +1,19 @@
-import React from 'react'
-import { Basic } from './components/Basic'
+import { Basic } from "./components/Basic";
 
-const page = () => {
+export const metadata = {
+  robots: {
+    follow: false,
+    index: false,
+  },
+  title: "Sign In",
+};
+
+export default function SignInPage() {
   return (
-    <div className=''>
-      <div className=" flex flex-col justify-center items-center ">
-        <Basic/>
+    <div>
+      <div className="flex flex-col items-center justify-center">
+        <Basic />
       </div>
-      
     </div>
-  )
+  );
 }
-
-export default page;
