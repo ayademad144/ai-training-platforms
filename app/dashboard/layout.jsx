@@ -1,14 +1,17 @@
+import { checkAdmin } from "@/lib/auth";
 
-import { checkAdmin } from '@/lib/auth';
+export const metadata = {
+  robots: {
+    follow: false,
+    index: false,
+  },
+  title: "Dashboard",
+};
 
-export  async function AdminLayout({ children }) {
+export async function AdminLayout({ children }) {
   await checkAdmin();
 
-  return (
-    <>
-      {children}
-    </>
-  );
+  return <>{children}</>;
 }
 
 export default AdminLayout;

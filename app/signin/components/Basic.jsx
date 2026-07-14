@@ -3,13 +3,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 
 import { createClient } from "@/lib/supabase/client";
 
 const supabase = createClient();
-
-import { Typography, Input, Button } from "@material-tailwind/react";
-import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/solid";
 
 export function Basic() {
   const router = useRouter();
@@ -21,7 +19,7 @@ export function Basic() {
 
   const [loading, setLoading] = useState(false);
 
-  const togglePasswordVisiblity = () => {
+  const togglePasswordVisibility = () => {
     setPasswordShown((prev) => !prev);
   };
 
@@ -30,12 +28,22 @@ export function Basic() {
 
     setLoading(true);
 
+    if (!supabase) {
+      await Swal.fire({
+        icon: "error",
+        title: "Configuration Error",
+        text: "Authentication is not configured.",
+      });
+
+      setLoading(false);
+      return;
+    }
+
     // Login
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
-    console.log(data.session);
 
     if (error) {
       Swal.fire({
@@ -69,7 +77,6 @@ export function Basic() {
     }
 
     switch (admin.role) {
-      
       case "admin":
         router.push("/dashboard");
         break;
@@ -91,71 +98,83 @@ export function Basic() {
   return (
     <section className="grid h-screen place-items-center p-8">
       <div>
-        <Typography variant="h3" color="blue-gray" className="mb-2">
+        <h1 className="mb-2 text-3xl font-semibold leading-snug tracking-normal text-gray-900">
           Sign In
-        </Typography>
+        </h1>
 
-        <Typography className="mb-12 text-gray-600 text-lg">
+        <p className="mb-12 text-lg font-light leading-relaxed text-gray-600">
           Enter your email and password to sign in
-        </Typography>
+        </p>
 
-        <form
-          onSubmit={handleLogin}
-          className="mx-auto max-w-sm text-left"
-        >
+        <form onSubmit={handleLogin} className="mx-auto max-w-sm text-left">
           <div className="mb-6">
-            <Typography variant="small" className="mb-2 font-medium">
+            <label
+              htmlFor="email"
+              className="mb-2 block text-sm font-medium text-gray-900"
+            >
               Email
-            </Typography>
+            </label>
 
-            <Input
+            <input
+              id="email"
               type="email"
-              size="lg"
               placeholder="name@mail.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              autoComplete="email"
+              className="h-11 w-full rounded-md border border-gray-300 bg-transparent px-3 text-sm text-gray-900 outline-none transition-colors placeholder:text-gray-400 focus:border-gray-900 focus:ring-1 focus:ring-gray-900"
               required
             />
           </div>
 
           <div className="mb-6">
-            <Typography variant="small" className="mb-2 font-medium">
+            <label
+              htmlFor="password"
+              className="mb-2 block text-sm font-medium text-gray-900"
+            >
               Password
-            </Typography>
+            </label>
 
-            <Input
-              size="lg"
-              type={passwordShown ? "text" : "password"}
-              placeholder="********"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              icon={
+            <div className="relative">
+              <input
+                id="password"
+                type={passwordShown ? "text" : "password"}
+                placeholder="********"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                autoComplete="current-password"
+                className="h-11 w-full rounded-md border border-gray-300 bg-transparent px-3 pr-11 text-sm text-gray-900 outline-none transition-colors placeholder:text-gray-400 focus:border-gray-900 focus:ring-1 focus:ring-gray-900"
+                required
+              />
+
+              <span className="absolute inset-y-0 right-0 flex items-center pr-3">
                 <button
                   type="button"
-                  onClick={togglePasswordVisiblity}
+                  onClick={togglePasswordVisibility}
+                  className="rounded text-gray-600 hover:text-gray-900"
+                  aria-label={passwordShown ? "Hide password" : "Show password"}
+                  aria-pressed={passwordShown}
                 >
                   {passwordShown ? (
-                    <EyeIcon className="h-5 w-5" />
+                    <EyeIcon className="h-5 w-5" aria-hidden="true" />
                   ) : (
-                    <EyeSlashIcon className="h-5 w-5" />
+                    <EyeSlashIcon className="h-5 w-5" aria-hidden="true" />
                   )}
                 </button>
-              }
-            />
+              </span>
+            </div>
           </div>
 
-          <Button
+          <button
             type="submit"
-            color="gray"
-            fullWidth
             disabled={loading}
+            className="w-full rounded-lg bg-gray-900 px-6 py-3 text-xs font-bold uppercase text-white shadow-md transition-shadow hover:shadow-lg focus-visible:outline-gray-900 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {loading ? "Signing In..." : "Sign In"}
-          </Button>
+          </button>
         </form>
       </div>
     </section>
   );
-} 
+}
 export default Basic;

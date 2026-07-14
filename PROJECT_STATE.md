@@ -2,43 +2,42 @@
 
 ## Current milestone
 
-Final production-hardening milestone — complete.
+Dependency compatibility, merge resolution, and JavaScript migration - complete on 2026-07-14.
 
-The homepage design is complete. No additional feature or visual work is approved.
+The existing homepage, sign-in flow, and protected dashboard behavior are preserved. The project installs, lints, builds, and serves correctly with the dependency ranges required by `package.json`.
 
 ## Completed milestones
 
-- Milestone 1: App Router architecture, marketing route group, Tailwind v4 tokens, optimized fonts, and root metadata baseline.
-- Milestone 2: Responsive and accessible Navbar with a minimal client boundary.
-- Milestone 3: Server-rendered Hero and platform preview.
-- Milestone 4: Directory highlights, category filtering, and reusable platform cards.
-- Milestone 5: Feature cards, guides, optimized guide imagery, and newsletter UI.
-- Milestone 6: Responsive semantic Footer with centralized data.
-- Final milestone: Production metadata, crawler endpoints, social images, manifest, route-state UI, accessibility hardening, image optimization, dependency cleanup, and deployment documentation.
+- Milestone 1: App Router architecture, global design tokens, and optimized fonts.
+- Milestone 2: Responsive, accessible Navbar.
+- Milestone 3: Server-rendered Hero.
+- Milestone 4: Categories and filterable platform grid.
+- Milestone 5: Features, guides, and newsletter sections.
+- Milestone 6: Responsive semantic Footer.
+- Production hardening: metadata, crawler routes, social images, route-state UI, SEO, accessibility, and performance checks.
+- Compatibility migration: merge conflicts resolved in source, JavaScript-only application restored, and Next.js 15/React 18/Tailwind CSS 3 compatibility verified.
 
 ## Remaining milestones
 
-None. Any future route, localization, or backend work requires a new approved scope.
+None. New pages, localization, backend features, or visual changes require a separately approved scope.
 
 ## Architecture decisions
 
-- Next.js 16 App Router is the only application framework.
-- Public UI lives in `app/(marketing)`; the route group does not affect URLs.
-- `app/(marketing)/layout.js` composes the shared Header, Footer, and keyboard skip link.
-- Home sections live in `components/home`; shared chrome and route-state UI live in `components/layout`.
-- Static content lives in `data`; deployment/site configuration lives in `lib/site-config.js`.
-- Components are Server Components unless local interaction or an error boundary requires a Client Component.
-- The only Client Components are `Navbar`, `PlatformsGrid`, `NewsletterForm`, and `app/error.jsx`.
-- Metadata is centralized in `app/layout.js` and `lib/site-config.js`.
-- `SITE_URL` is the preferred canonical deployment variable. `NEXT_PUBLIC_SITE_URL`, Vercel production URLs, and localhost are fallbacks in that order.
-- Generated metadata routes use TypeScript. Existing JSX remains JavaScript with `allowJs` enabled for incremental migration.
-- `app/sitemap.ts` exposes only the implemented public homepage. Future links are intentionally excluded until their routes exist.
-- `app/robots.ts` allows public crawling and excludes the untouched `/Admin` route.
-- Open Graph and Twitter images are statically generated through `next/og` with no external asset request.
-- Inter and Plus Jakarta Sans remain self-hosted through `next/font` with Latin subsets and `swap` display.
-- Above-fold brand imagery loads eagerly; below-fold guide and Footer images use default lazy loading.
-- Unsplash optimization is restricted to HTTPS `/photo-*` paths.
-- The existing `/Admin` page and Supabase business logic remain untouched.
+- Next.js `15.5.20`, React `18.3.1`, Tailwind CSS `3.4.19`, and the App Router are the application foundation.
+- The repository is JavaScript-only. `jsconfig.json` supplies the `@/*` path alias; no project `.ts`, `.tsx`, or `.d.ts` source files remain.
+- Public UI lives in `app/(marketing)`. The route group adds shared Header, Footer, and skip navigation without changing public URLs.
+- Authentication routes remain outside the marketing layout. `/signin` is public; `/dashboard` is protected by Supabase checks in both `middleware.js` and the dashboard layout.
+- `middleware.js` follows the Next.js 15 middleware convention and delegates cookie/session handling to `lib/supabase/middleware.js`.
+- Supabase browser and server clients use the public `@supabase/ssr` exports. Missing environment variables fail safely: public routes remain available and protected routes redirect to sign-in.
+- Components are Server Components by default. Client Components are limited to navigation/filter/form interaction and error recovery.
+- Static homepage content is separated into `data/` modules and rendered through reusable mapped components.
+- Tailwind CSS 3 uses `tailwind.config.js`, `@tailwind` CSS directives, PostCSS, and Autoprefixer. Material Tailwind's `withMT` wrapper is retained because the dependency is explicitly required.
+- Global CSS contains only design tokens and global base behavior. Component styling remains in Tailwind utility classes.
+- Inter and Plus Jakarta Sans are loaded through `next/font` with Latin subsets and `display: "swap"`.
+- Metadata is centralized in `app/layout.js` and `lib/site-config.js`. Generated metadata endpoints are JavaScript modules.
+- Sign-in and dashboard routes opt out of indexing; `robots.js` also blocks private/authentication paths.
+- The build uses Next.js 15 worker threads because this Windows validation sandbox blocks child-process workers. `scripts/next15-build.cjs` removes only already-consumed internal configuration callbacks from worker payloads; it does not change application runtime behavior.
+- No UI redesign or business-rule change was made during compatibility work.
 
 ## Folder structure
 
@@ -47,18 +46,23 @@ app/
   (marketing)/
     layout.js
     page.jsx
-  Admin/
+  dashboard/
+    layout.jsx
+    page.jsx
+  signin/
+    components/
+      Basic.jsx
     page.jsx
   error.jsx
   fonts.js
   globals.css
   layout.js
   loading.jsx
-  manifest.ts
+  manifest.js
   not-found.jsx
   opengraph-image.jsx
-  robots.ts
-  sitemap.ts
+  robots.js
+  sitemap.js
   twitter-image.jsx
 components/
   home/
@@ -90,132 +94,108 @@ data/
   guides.js
   platforms.js
 lib/
+  auth.js
   site-config.js
-  supabase.js
+  supabase/
+    client.js
+    middleware.js
+    server.js
 public/
   brand/
     ai-training-models.svg
-CHANGELOG.md
-FINAL_REPORT.md
-PROJECT_STATE.md
-TODO.md
-next.config.mjs
-package.json
-tsconfig.json
+scripts/
+  next15-build.cjs
+middleware.js
+jsconfig.json
+tailwind.config.js
 ```
-
-`next-env.d.ts` is generated by Next.js and intentionally ignored by the repository's default `.gitignore`.
 
 ## Components created
 
-### Server Components
-
-- `SiteHeader`
-- `NavigationLinks`
-- `Footer`
-- `FooterColumn`
-- `SocialLinks`
-- `RouteStatus`
-- `Hero`
-- `HeroPlatformPreview`
-- `Categories`
-- `CategoryCard`
-- `PlatformCard`
-- `Features`
-- `FeatureCard`
-- `LatestGuides`
-- `GuideCard`
-- `Newsletter`
-- `Loading`
-- `NotFound`
-
 ### Client Components
 
-- `Navbar` — mobile navigation, active route state, language-label toggle, and Escape handling.
-- `PlatformsGrid` — local category filtering.
-- `NewsletterForm` — form state and confirmation feedback.
-- `Error` — required Next.js route error boundary and retry action.
+- `Navbar`: mobile navigation, active route state, language-label toggle, and Escape handling.
+- `PlatformsGrid`: local category filtering.
+- `NewsletterForm`: controlled form state and local confirmation.
+- `Basic`: Supabase sign-in form, password visibility, role validation, and feedback dialogs.
+- `app/error.jsx`: Next.js error boundary and retry action.
 
-## Files created in the final milestone
+### Server Components and server modules
 
-- `app/sitemap.ts`
-- `app/robots.ts`
-- `app/manifest.ts`
-- `app/loading.jsx`
-- `app/error.jsx`
-- `app/not-found.jsx`
-- `app/opengraph-image.jsx`
-- `app/twitter-image.jsx`
-- `components/layout/route-status.jsx`
-- `lib/site-config.js`
-- `tsconfig.json`
-- `FINAL_REPORT.md`
+- Marketing layout, homepage composition, Site Header, Footer, route states, and non-interactive homepage sections/cards.
+- Sign-in page shell and dashboard page/layout.
+- Supabase authorization helpers, metadata routes, sitemap, robots, manifest, and generated social images.
 
-## Files modified in the final milestone
+## Files created in the compatibility migration
 
-- `app/layout.js`
-- `app/(marketing)/layout.js`
-- `app/(marketing)/page.jsx`
-- `components/layout/navbar.jsx`
-- `components/home/guide-card.jsx`
-- `next.config.mjs`
+- `tailwind.config.js`
+- `scripts/next15-build.cjs`
+- `middleware.js` replaces the incompatible Next.js 16 `proxy.js` convention.
+
+## Files modified in the compatibility migration
+
 - `package.json`
 - `package-lock.json`
+- `next.config.mjs`
+- `postcss.config.mjs`
+- `eslint.config.mjs`
+- `app/globals.css`
+- `README.md`
 - `PROJECT_STATE.md`
 - `CHANGELOG.md`
 - `TODO.md`
+- `FINAL_REPORT.md`
 
-## Files removed in the final milestone
+## Files renamed or removed
 
-- `app/favicon.ico` — default Next.js favicon replaced by explicit brand-icon metadata.
-- `jsconfig.json` — replaced by `tsconfig.json`.
-- `public/file.svg`
-- `public/globe.svg`
-- `public/next.svg`
-- `public/vercel.svg`
-- `public/window.svg`
+- `proxy.js` was replaced by `middleware.js` for Next.js 15.
+- `app/manifest.ts`, `app/robots.ts`, and `app/sitemap.ts` were converted to `.js` modules.
+- `tsconfig.json` and `next-env.d.ts` were removed; `jsconfig.json` provides JavaScript path aliases.
+- Dead duplicate components and the duplicate legacy Supabase client remain removed.
 
 ## Dependencies
 
 ### Runtime
 
-- Next.js `16.2.10`
-- React and React DOM `19.2.4`
-- Tailwind CSS `4.3.2`
-- Heroicons React `2.2.0`
-- Supabase JS `2.110.3` (existing business dependency; not used by the current homepage bundle)
+- `next` `15.5.20`
+- `react` and `react-dom` `18.3.1`
+- `@heroicons/react` `2.2.0`
+- `@material-tailwind/react` `2.1.10`
+- `@supabase/ssr` `0.12.1`
+- `@supabase/supabase-js` `2.110.3`
+- `sweetalert2` `11.26.25`
 
 ### Development
 
-- TypeScript `6.0.3`
-- `@types/node` `26.1.1`
-- `@types/react` `19.2.17`
-- ESLint `9.39.5`
-- `eslint-config-next` `16.2.10`
+- `tailwindcss` `3.4.19`
+- `postcss` `8.5.19`
+- `autoprefixer` `10.5.2`
+- `eslint` `9.39.5` (resolved by the required `^9` range)
+- `eslint-config-next` `15.5.20`
 
-`@material-tailwind/react` was removed because it was unused and installed an unnecessary React 18 dependency subtree.
+No package outside the dependency names and ranges specified by the user was added to the root manifest.
 
 ## Validation
 
-- `npm run lint`: passes.
-- `npx tsc --noEmit`: passes with strict TypeScript settings.
-- `git diff --check`: passes.
-- Next.js production compilation: passes.
-- Final local `next build` subprocess: blocked by the existing Windows `spawn EPERM` environment issue after compilation.
-- Runtime smoke tests: `/`, `/sitemap.xml`, `/robots.txt`, `/manifest.webmanifest`, `/opengraph-image`, and `/twitter-image` return `200` with correct content types.
-- Custom unmatched route returns `404`, includes `noindex`, and renders the custom not-found copy.
-- Canonical, author, robots, icon, manifest, Open Graph, and Twitter tags were verified in rendered HTML.
+- `npm install`: passes; lockfile and installed dependency tree match `package.json`.
+- `npm run lint`: passes with no ESLint errors or warnings.
+- `npm run build`: passes on Next.js `15.5.20`; all expected application and metadata routes compile.
+- `npm ls --depth=0`: clean dependency tree with the requested top-level packages only.
+- Source conflict-marker scan: clean.
+- JavaScript-only source scan: no `.ts`, `.tsx`, or `.d.ts` project files.
+- Next.js 16, React 19, and Tailwind CSS 4 API scan: clean.
+- Production runtime smoke test: `/`, `/signin`, crawler/manifest endpoints, and social images return `200`; an unmatched route returns `404`; unauthenticated `/dashboard` returns the expected `307` redirect.
 
-## Known limitations
+## Known issues
 
-- Platform, guide, company, policy, and newsletter destination routes are linked for the completed design but are not implemented and currently return the custom 404.
-- Newsletter submission provides local confirmation only; Supabase persistence is not connected.
-- The language control changes its label only; full localization is not implemented.
-- Social labels remain non-interactive because the reference does not provide verified account URLs.
-- Production deployments must define `SITE_URL` or `NEXT_PUBLIC_SITE_URL`; otherwise canonical URLs fall back to the detected Vercel host or localhost.
-- npm reports a moderate PostCSS advisory through Next.js 16.2.10. npm proposes an unsafe downgrade to Next 9, so no automated fix was applied. Reassess when a compatible Next.js release resolves it.
-- The local Windows environment still prevents Next's final type-generation subprocess from spawning. Compilation and standalone TypeScript checks pass; CI or a normal deployment environment must run the final build gate.
+- `npm audit` reports two moderate advisories from the PostCSS copy bundled inside the required Next.js `15.5.20`. npm only proposes a breaking Next.js `9.3.3` replacement, so it was not applied because it violates the exact dependency requirement.
+- The build logs a non-fatal Edge Runtime warning because the required `@supabase/ssr` public entry point also exports browser-client code that references `process.version`. The middleware and build still complete successfully.
+- Webpack reports non-fatal cache serialization warnings for large strings; they do not affect build correctness or runtime output.
+- Source files contain no conflict markers and all validations pass, but this execution sandbox cannot write `.git/index`. Git can continue showing historical `UU` entries until `git add package.json package-lock.json app/globals.css` is run from a normal local shell.
+- Supabase authentication requires `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` in the deployment environment.
+- Several design links target future routes that are not implemented and correctly resolve to the custom 404.
+- Newsletter submission remains local UI only; localization and verified social destinations remain future scope.
 
 ## Next milestone
 
-None. The approved project scope is complete.
+None. The approved implementation and compatibility scope is complete.

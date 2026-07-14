@@ -1,68 +1,78 @@
 # AI Training Platforms
 
-AI Training Platforms is a modern web application that helps users discover AI training, data annotation, search evaluation, and remote AI job opportunities in one place.
+AI Training Platforms helps users discover AI training, data annotation, search evaluation, and remote AI work opportunities in one directory.
 
 ## Features
 
-- Browse AI training platforms
-- Compare platform requirements
-- View payment methods and rates
-- Read application guides
-- Search and filter platforms
-- Responsive modern UI
-- SEO optimized
-- Admin dashboard for managing content
+- Responsive marketing homepage and navigation
+- Category-based platform filtering
+- Platform, benefits, guide, and newsletter sections
+- Supabase email/password sign-in
+- Protected admin dashboard
+- App Router metadata, sitemap, robots, manifest, and social images
+- Accessible loading, error, and not-found states
 
-## Tech Stack
+## Tech stack
 
-- Next.js 16
-- React 19
-- Tailwind CSS
-- Material Tailwind
-- Supabase
+- Next.js 15.5.20 with App Router
+- React 18.3.1
+- Tailwind CSS 3.4.19
+- Material Tailwind 2.1.10
+- Supabase SSR and Supabase JS
 - JavaScript
 
-## Installation
+## Requirements
+
+- Node.js 20.9 or newer
+- npm
+
+## Environment variables
+
+Create a local `.env.local` file when testing authentication:
+
+```text
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-project-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+```
+
+## Local development
 
 ```bash
 npm install
-```
-
-Run the development server:
-
-```bash
 npm run dev
 ```
 
-Open:
+Open `http://localhost:3000`.
 
-```
-http://localhost:3000
-```
+## Validation
 
-## Project Structure
-
-```
-app/
- ├── admin/
- ├── components/
- ├── platforms/
- ├── guides/
- ├── about/
- ├── contact/
- └── page.jsx
+```bash
+npm run lint
+npm run build
+npm start
 ```
 
-## Future Features
+## Project structure
 
-- Authentication
-- Favorites
-- Platform Reviews
-- Newsletter
-- Multi-language (English & Arabic)
-- Admin Dashboard
-- Search & Filters
-- SEO Optimization
+```text
+app/                 App Router pages, layouts, metadata, and route states
+components/home/     Homepage sections and reusable cards
+components/layout/   Header, navigation, Footer, and route-state UI
+data/                Static homepage and Footer data
+lib/supabase/        Browser, server, and middleware Supabase clients
+public/brand/        Brand asset
+scripts/             Next.js 15 build compatibility runner
+middleware.js        Session refresh and protected-route middleware
+tailwind.config.js   Tailwind CSS 3 and Material Tailwind configuration
+```
+
+## Documentation
+
+- `PROJECT_STATE.md`: continuation state, architecture decisions, and known issues.
+- `CHANGELOG.md`: implementation and compatibility changes.
+- `TODO.md`: deployment and future-scope checklist.
+- `FINAL_REPORT.md`: complete production report and deployment checklist.
 
 ## License
 
