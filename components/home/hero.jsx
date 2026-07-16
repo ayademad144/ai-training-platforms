@@ -11,7 +11,7 @@ export default function Hero() {
       <div className="mx-auto max-w-4xl text-center">
         <p className="mb-8 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-700">
           <span aria-hidden="true" className="size-1.5 shrink-0 rounded-full bg-blue-500" />
-          Updated July 20255 · 20+ Platforms Reviewed
+          Updated July 202555· 20+ Platforms Reviewed
         </p>
 
         <h1
