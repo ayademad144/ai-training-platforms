@@ -85,7 +85,8 @@ export default function PlatformHero({ platform }) {
               </div>
 
               <PlatformActions
-                referralLinks={platform.referralLinks}
+                allProjectsReferralLink={platform.allProjectsReferralLink}
+                platformSlug={platform.slug}
                 websiteUrl={platform.websiteUrl}
               />
             </div>

@@ -1,17 +1,54 @@
+"use client";
+
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
+
+export function trackReferralClick({
+  platformSlug,
+  referral,
+  referralType = "individual_project",
+}) {
+  if (!platformSlug || !referral?.url) {
+    return;
+  }
+
+  const payload = JSON.stringify({
+    platformSlug,
+    referralLabel: referral.label,
+    referralType,
+    referralUrl: referral.url,
+  });
+
+  if (navigator.sendBeacon) {
+    const blob = new Blob([payload], { type: "application/json" });
+    navigator.sendBeacon("/api/referral-clicks", blob);
+    return;
+  }
+
+  fetch("/api/referral-clicks", {
+    body: payload,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    keepalive: true,
+    method: "POST",
+  }).catch(() => {});
+}
 
 export default function PlatformActions({
   centered = false,
-  referralLinks = [],
-  showAllReferrals = false,
+  allProjectsReferralLink = "",
   websiteLabel = "Visit Website",
+  platformSlug,
   websiteUrl,
 }) {
-  const visibleReferrals = showAllReferrals
-    ? referralLinks
-    : referralLinks.slice(0, 1);
+  const allProjectsReferral = allProjectsReferralLink
+    ? {
+        label: "All Projects Referral Link",
+        url: allProjectsReferralLink,
+      }
+    : null;
 
-  if (!websiteUrl && visibleReferrals.length === 0) {
+  if (!websiteUrl && !allProjectsReferral) {
     return null;
   }
 
@@ -33,18 +70,24 @@ export default function PlatformActions({
         </a>
       ) : null}
 
-      {visibleReferrals.map((referral, index) => (
+      {allProjectsReferral ? (
         <a
           className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-white px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
-          href={referral.url}
-          key={`${referral.url}-${index}`}
+          href={allProjectsReferral.url}
+          onClick={() =>
+            trackReferralClick({
+              platformSlug,
+              referral: allProjectsReferral,
+              referralType: "all_projects",
+            })
+          }
           rel="noopener noreferrer sponsored"
           target="_blank"
         >
-          {showAllReferrals ? referral.label : "Referral Link"}
+          All Projects Referral Link
           <ArrowTopRightOnSquareIcon aria-hidden="true" className="size-[13px]" />
         </a>
-      ))}
+      ) : null}
     </div>
   );
 }

@@ -1,9 +1,9 @@
 import PlatformActions from "./platform-actions";
 
 export default function PlatformReferral({ platform }) {
-  const hasReferrals = platform.referralLinks.length > 0;
+  const hasReferral = Boolean(platform.allProjectsReferralLink);
 
-  if (!platform.websiteUrl && !hasReferrals) {
+  if (!platform.websiteUrl && !hasReferral) {
     return null;
   }
 
@@ -19,14 +19,14 @@ export default function PlatformReferral({ platform }) {
         Ready to Join {platform.name}?
       </h2>
       <p className="mb-6 text-sm text-muted-foreground">
-        {hasReferrals
-          ? "Choose an available referral link or visit the official platform website."
+        {hasReferral
+          ? "Choose the all projects referral link or visit the official platform website."
           : "Visit the official platform website to review current opportunities."}
       </p>
       <PlatformActions
         centered
-        referralLinks={platform.referralLinks}
-        showAllReferrals
+        allProjectsReferralLink={platform.allProjectsReferralLink}
+        platformSlug={platform.slug}
         websiteLabel={`Visit ${platform.name}`}
         websiteUrl={platform.websiteUrl}
       />

@@ -44,6 +44,7 @@ const categoryColorOptions = [
 ];
 
 const emptyForm = {
+  allProjectsReferralLink: "",
   category: "AI Training",
   categoryColor: "blue",
   countries: "",
@@ -102,6 +103,8 @@ function normalizePlatform(platform) {
     typeof platform.referralLink === "string" ? platform.referralLink : "";
 
   return {
+    allProjectsReferralLink:
+      platform.allProjectsReferralLink || legacyReferralLink || "",
     category: platform.category || "AI Training",
     categoryColor: platform.categoryColor || "blue",
     countries: platform.countries || "",
@@ -122,8 +125,8 @@ function normalizePlatform(platform) {
           }))
         : [
             {
-              projectName: legacyReferralLink ? platform.name || "Referral" : "",
-              referralLink: legacyReferralLink,
+              projectName: "",
+              referralLink: "",
             },
           ],
     requirements: normalizeTextList(platform.requirements),
@@ -164,6 +167,14 @@ function validateForm(form) {
 
   if (form.image && !isValidHttpUrl(form.image)) {
     errors.image = "Enter a valid http or https image URL.";
+  }
+
+  if (
+    form.allProjectsReferralLink &&
+    !isValidHttpUrl(form.allProjectsReferralLink)
+  ) {
+    errors.allProjectsReferralLink =
+      "Enter a valid http or https all projects referral link.";
   }
 
   form.referralLinks.forEach((item, index) => {
@@ -213,6 +224,7 @@ function buildPayload(form) {
     .filter((item) => item.projectName || item.referralLink);
 
   return {
+    allProjectsReferralLink: form.allProjectsReferralLink.trim(),
     category: form.category.trim(),
     categoryColor: form.categoryColor.trim(),
     countries: form.countries.trim(),
@@ -913,6 +925,18 @@ export default function PlatformForm({
               />
 
               <TextInput
+                error={errors.allProjectsReferralLink}
+                id="allProjectsReferralLink"
+                label="All Projects Referral Link"
+                onChange={(event) =>
+                  updateField("allProjectsReferralLink", event.target.value)
+                }
+                placeholder="https://example.com/referral/all-projects"
+                type="url"
+                value={form.allProjectsReferralLink}
+              />
+
+              <TextInput
                 error={errors.image}
                 id="image"
                 label="Website Image URL"
@@ -1033,10 +1057,10 @@ export default function PlatformForm({
               <fieldset className="md:col-span-2">
                 <div className="mb-3 flex items-center justify-between gap-3">
                   <legend className="text-sm font-semibold text-gray-900">
-                    Referral Links
+                    Individual Projects
                   </legend>
                   <button
-                    aria-label="Add another referral link"
+                    aria-label="Add another individual project"
                     className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-700 transition-colors hover:border-gray-300 hover:bg-gray-50"
                     onClick={addReferralLink}
                     type="button"
@@ -1076,7 +1100,7 @@ export default function PlatformForm({
 
                       <div className="flex items-end gap-2">
                         <button
-                          aria-label="Add another referral link"
+                          aria-label="Add another individual project"
                           className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-700 transition-colors hover:border-gray-300 hover:bg-gray-50"
                           onClick={addReferralLink}
                           type="button"
@@ -1084,7 +1108,7 @@ export default function PlatformForm({
                           <PlusIcon aria-hidden="true" className="h-5 w-5" />
                         </button>
                         <button
-                          aria-label="Remove referral link"
+                          aria-label="Remove individual project"
                           className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-red-100 bg-white text-red-600 transition-colors hover:border-red-200 hover:bg-red-50"
                           onClick={() => removeReferralLink(index)}
                           type="button"
@@ -1266,7 +1290,13 @@ export default function PlatformForm({
                   <dd className="font-medium text-gray-900">{form.payment.length}</dd>
                 </div>
                 <div className="flex items-center justify-between gap-3">
-                  <dt className="text-gray-500">Referral links</dt>
+                  <dt className="text-gray-500">All projects link</dt>
+                  <dd className="font-medium text-gray-900">
+                    {form.allProjectsReferralLink.trim() ? "Set" : "Not set"}
+                  </dd>
+                </div>
+                <div className="flex items-center justify-between gap-3">
+                  <dt className="text-gray-500">Individual projects</dt>
                   <dd className="font-medium text-gray-900">
                     {
                       form.referralLinks.filter(

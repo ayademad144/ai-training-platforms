@@ -1,10 +1,10 @@
 import PlatformFaq from "@/components/platform/platform-faq";
 import PlatformHero from "@/components/platform/platform-hero";
+import PlatformIndividualProjects from "@/components/platform/platform-individual-projects";
 import PlatformListSection from "@/components/platform/platform-list-section";
 import PlatformOverview from "@/components/platform/platform-overview";
 import PlatformPayment from "@/components/platform/platform-payment";
 import PlatformProsCons from "@/components/platform/platform-pros-cons";
-import PlatformReferral from "@/components/platform/platform-referral";
 import PlatformSidebar from "@/components/platform/platform-sidebar";
 import {
   getPlatformBySlug,
@@ -83,8 +83,11 @@ export default async function PlatformDetailsPage({ params }) {
                 cons={platform.prosAndCons.cons}
                 pros={platform.prosAndCons.pros}
               />
+              <PlatformIndividualProjects
+                platformSlug={platform.slug}
+                projects={platform.referralLinks}
+              />
               <PlatformFaq items={platform.frequentlyAsked} />
-              <PlatformReferral platform={platform} />
             </div>
 
             <PlatformSidebar
