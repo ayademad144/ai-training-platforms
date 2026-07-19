@@ -1,4 +1,5 @@
 import { siteConfig } from "@/lib/site-config";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import { inter, plusJakartaSans } from "./fonts";
 import NavBar from "@/components/layout/navbar";
@@ -71,11 +72,11 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${inter.variable} ${plusJakartaSans.variable} h-full`}
     >
-      
       <body className="min-h-full flex flex-col">
-        <NavBar/>
+        <NavBar />
         {children}
-        </body>
+        <SpeedInsights />
+      </body>
     </html>
   );
 }
