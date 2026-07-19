@@ -76,7 +76,7 @@ export default function Navbar() {
               aria-hidden="true"
               height={32}
               loading="eager"
-              src="/brand/ai-training-models.svg"
+              src="/brand/trainhub-ai-icon.svg"
               width={32}
             />
             <span className="hidden text-sm font-semibold text-foreground sm:block">

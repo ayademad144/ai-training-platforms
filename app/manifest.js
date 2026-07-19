@@ -9,7 +9,7 @@ export default function manifest() {
       {
         purpose: "any",
         sizes: "any",
-        src: "/brand/ai-training-models.svg",
+        src: "/brand/trainhub-ai-icon.svg",
         type: "image/svg+xml",
       },
     ],
@@ -18,6 +18,6 @@ export default function manifest() {
     scope: "/",
     short_name: siteConfig.shortName,
     start_url: "/",
-    theme_color: "#2563eb",
+    theme_color: "#000000",
   };
 }

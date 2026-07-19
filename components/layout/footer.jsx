@@ -12,25 +12,25 @@ export default function Footer() {
   return (
     <footer className="border-t border-border bg-white px-4 pb-10 pt-16 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        <div className="mb-12 grid grid-cols-2 gap-10 lg:grid-cols-4">
-          <div className="col-span-2 lg:col-span-1">
+        <div className="mb-12 grid grid-cols-1 justify-between gap-10 text-center sm:grid-cols-3 sm:text-left lg:grid-cols-[minmax(260px,320px)_max-content_max-content] lg:gap-28">
+          <div>
             <Link
               aria-label={`${footerBrand.name} home`}
-              className="mb-4 flex items-center gap-2.5"
+              className="mb-4 flex items-center justify-center gap-2.5 sm:justify-start"
               href="/"
             >
               <Image
                 alt=""
                 aria-hidden="true"
                 height={32}
-                src="/brand/ai-training-models.svg"
+                src="/brand/trainhub-ai-icon.svg"
                 width={32}
               />
               <span className="text-sm font-semibold text-foreground">
                 {footerBrand.name}
               </span>
             </Link>
-            <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">
+            <p className="mx-auto max-w-xs text-sm leading-relaxed text-muted-foreground sm:mx-0">
               {footerBrand.description}
             </p>
           </div>

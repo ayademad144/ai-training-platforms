@@ -6,6 +6,7 @@ export default function LatestGuides() {
     <section
       aria-labelledby="latest-guides-title"
       className="bg-white px-4 py-20 sm:px-6 lg:px-8"
+      id="latest-guides"
     >
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">

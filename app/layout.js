@@ -25,10 +25,10 @@ export const metadata = {
     icon: [
       {
         type: "image/svg+xml",
-        url: "/brand/ai-training-models.svg",
+        url: "/brand/trainhub-ai-icon.svg",
       },
     ],
-    shortcut: "/brand/ai-training-models.svg",
+    shortcut: "/brand/trainhub-ai-icon.svg",
   },
   keywords: siteConfig.keywords,
   manifest: "/manifest.webmanifest",

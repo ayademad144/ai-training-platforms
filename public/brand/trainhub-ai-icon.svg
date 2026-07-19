@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="AI Training Models">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Train Hub AI">
   <rect width="32" height="32" rx="8" fill="#000"/>
   <text x="16" y="20" fill="#fff" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="800" letter-spacing="0" text-anchor="middle">AI</text>
 </svg>

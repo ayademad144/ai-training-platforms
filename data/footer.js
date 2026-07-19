@@ -6,30 +6,12 @@ export const footerBrand = {
 
 export const footerColumns = [
   {
-    heading: "Explore",
-    id: "explore",
-    links: [
-      { href:"/#featured-platforms", label: "All Platforms" },
-      { href: "/platforms?category=ai-training", label: "AI Training" },
-      {
-        href: "/platforms?category=data-annotation",
-        label: "Data Annotation",
-      },
-      {
-        href: "/platforms?category=ai-evaluation",
-        label: "AI Evaluation",
-      },
-      { href: "/guides", label: "Latest Guides" },
-    ],
-  },
-  {
     heading: "Resources",
     id: "resources",
     links: [
-      { href: "/guides/getting-started", label: "Getting Started" },
+      { href: "/#featured-platforms", label: "Getting Started" },
+      { href: "/#latest-guides", label: "Latest Guides" },
       { href: "/faq", label: "FAQ" },
-      { href: "/blog", label: "Blog" },
-      
     ],
   },
   {

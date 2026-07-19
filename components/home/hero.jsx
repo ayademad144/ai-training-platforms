@@ -29,7 +29,7 @@ export default function Hero() {
             </p>
             <div className="mt-8 flex  gap-8 sm:flex-row ">
               <Link
-                className="inline-flex items-center justify-center rounded-md  px-5 py-3 text-sm font-semibold bg-blue-800 text-white transition-colors hover:bg-blue-700"
+                className="inline-flex items-center justify-center rounded-md  px-5 py-3 text-sm font-semibold bg-foreground text-white transition-colors hover:bg-blue-700"
                 href="/#featured-platforms"
               >
                 Explore platforms{" "}  

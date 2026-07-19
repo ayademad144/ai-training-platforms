@@ -49,17 +49,12 @@ export default function AboutPage() {
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
-                className="inline-flex items-center justify-center rounded-md bg-foreground px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-black"
-                href="/platforms"
+                className="inline-flex items-center justify-center rounded-md bg-foreground px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+                href="/#featured-platforms"
               >
                 Explore platforms
               </Link>
-              <Link
-                className="inline-flex items-center justify-center rounded-md border border-border px-5 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
-                href="/guides/getting-started"
-              >
-                Read the guide
-              </Link>
+              
             </div>
           </div>
 
