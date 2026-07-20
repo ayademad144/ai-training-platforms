@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Swal from "sweetalert2";
 import {
@@ -18,7 +18,6 @@ import {
   TrashIcon,
 } from "@heroicons/react/24/outline";
 
-import PlatformForm from "../adding/platform-form";
 import { createClient } from "@/lib/supabase/client";
 import {
   getAdminAccessMessage,
@@ -39,7 +38,7 @@ function getPlatformKey(platform) {
   return platform?.id ?? platform?.slug;
 }
 
-function PlatformCard({ isSelected, onDelete, onEdit, platform }) {
+function PlatformCard({ onDelete, onEdit, platform }) {
   return (
     <Card className="border border-gray-200 bg-white shadow-sm">
       <CardBody>
@@ -72,7 +71,7 @@ function PlatformCard({ isSelected, onDelete, onEdit, platform }) {
           <div className="flex w-full gap-3 sm:w-auto">
             <Button
               className="flex flex-1 items-center justify-center gap-2 sm:flex-none"
-              color={isSelected ? "blue" : "gray"}
+              color="gray"
               onClick={onEdit}
               size="sm"
             >
@@ -98,7 +97,6 @@ function PlatformCard({ isSelected, onDelete, onEdit, platform }) {
 
 export default function UpdatePlatformClient() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const supabase = useMemo(() => createClient(), []);
   const [access, setAccess] = useState({
     authorized: false,
@@ -106,7 +104,6 @@ export default function UpdatePlatformClient() {
     message: "",
   });
   const [platforms, setPlatforms] = useState([]);
-  const [selectedPlatform, setSelectedPlatform] = useState(null);
   const [status, setStatus] = useState({
     loading: true,
     message: "",
@@ -164,31 +161,7 @@ export default function UpdatePlatformClient() {
       }
 
       const nextPlatforms = data || [];
-      const id = searchParams.get("id");
-      const slug = searchParams.get("slug");
-      const selectedFromUrl = nextPlatforms.find((platform) => {
-        return (
-          (id && String(platform.id) === String(id)) ||
-          (slug && platform.slug === slug)
-        );
-      });
-
       setPlatforms(nextPlatforms);
-      setSelectedPlatform((current) => {
-        if (selectedFromUrl) {
-          return selectedFromUrl;
-        }
-
-        if (!current) {
-          return null;
-        }
-
-        return (
-          nextPlatforms.find(
-            (platform) => String(platform.id) === String(current.id)
-          ) || null
-        );
-      });
       setStatus({
         loading: false,
         message: nextPlatforms.length
@@ -203,7 +176,7 @@ export default function UpdatePlatformClient() {
         type: "error",
       });
     }
-  }, [ensureAdminAccess, searchParams, supabase]);
+  }, [ensureAdminAccess, supabase]);
 
   useEffect(() => {
     loadPlatforms();
@@ -254,10 +227,6 @@ export default function UpdatePlatformClient() {
         showConfirmButton: false,
       });
 
-      if (String(selectedPlatform?.id) === String(platform.id)) {
-        setSelectedPlatform(null);
-      }
-
       loadPlatforms();
     } catch (error) {
       Swal.fire({
@@ -266,11 +235,6 @@ export default function UpdatePlatformClient() {
         icon: "error",
       });
     }
-  };
-
-  const handleFormSaved = () => {
-    setSelectedPlatform(null);
-    loadPlatforms();
   };
 
   if (access.checking) {
@@ -363,30 +327,14 @@ export default function UpdatePlatformClient() {
           {!status.loading &&
             platforms.map((platform) => (
               <PlatformCard
-                isSelected={
-                  String(selectedPlatform?.id) === String(platform.id)
-                }
                 key={getPlatformKey(platform)}
                 onDelete={() => handleDelete(platform)}
-                onEdit={() => setSelectedPlatform(platform)}
+                onEdit={() => router.push(`/dashboard/updating/${platform.slug}`)}
                 platform={platform}
               />
             ))}
         </section>
       </div>
-
-      {selectedPlatform ? (
-        <div className="mt-8">
-          <PlatformForm
-            embedded
-            initialPlatform={selectedPlatform}
-            mode="update"
-            onDeleted={handleFormSaved}
-            onSaved={handleFormSaved}
-            redirectOnSuccess={false}
-          />
-        </div>
-      ) : null}
     </main>
   );
 }

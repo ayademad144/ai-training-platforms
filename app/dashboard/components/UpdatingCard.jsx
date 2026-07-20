@@ -34,7 +34,7 @@ export function UpdatingCard() {
         </Typography>
       </CardBody>
       <CardFooter className="pt-0">
-        <a href="dashboard/updating" className="inline-block">
+        <a href="/dashboard/updating" className="inline-block">
           <Button size="sm" variant="text" className="flex items-center gap-2">
             go Update
             <svg

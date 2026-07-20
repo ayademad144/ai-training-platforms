@@ -714,6 +714,8 @@ export default function PlatformForm({
 
       if (redirectOnSuccess) {
         router.push("/#featured-platforms");
+      } else if (!embedded && isUpdating) {
+        router.push("/dashboard/updating");
       }
     } catch (error) {
       const errorMessage =
@@ -790,6 +792,8 @@ export default function PlatformForm({
 
       if (redirectOnSuccess) {
         router.push("/platforms");
+      } else if (!embedded) {
+        router.push("/dashboard/updating");
       }
     } catch (error) {
       const errorMessage =
