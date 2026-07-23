@@ -1,6 +1,7 @@
 import { CheckIcon } from "@heroicons/react/24/outline";
 
 export default function PlatformListSection({
+  id,
   items = [],
   title,
   variant = "check",
@@ -12,7 +13,11 @@ export default function PlatformListSection({
   const titleId = `platform-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 
   return (
-    <section aria-labelledby={titleId}>
+    <section
+      aria-labelledby={titleId}
+      className={id ? "scroll-mt-24" : undefined}
+      id={id}
+    >
       <h2
         className="mb-4 font-display text-xl font-bold text-foreground"
         id={titleId}

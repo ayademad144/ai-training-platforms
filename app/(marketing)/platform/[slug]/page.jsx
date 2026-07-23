@@ -74,6 +74,7 @@ export default async function PlatformDetailsPage({ params }) {
                 title="Requirements"
               />
               <PlatformListSection
+                id="passing-process"
                 items={platform.passing}
                 title="Passing / Acceptance Process"
                 variant="steps"

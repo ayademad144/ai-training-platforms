@@ -14,7 +14,7 @@ export default async function HomePage() {
       <Hero />
       <Features />
       <PlatformsGrid platforms={platforms} />
-      <LatestGuides />
+      <LatestGuides platforms={platforms} />
     </main>
   );
 }
