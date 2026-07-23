@@ -36,7 +36,7 @@ export default function PlatformCard({ platform }) {
       </div>
 
       <p className="flex-1 text-sm leading-relaxed text-muted-foreground">
-        {platform.description}
+        {platform.shortDescription}
       </p>
 
       <dl className="space-y-1.5 text-xs text-muted-foreground">

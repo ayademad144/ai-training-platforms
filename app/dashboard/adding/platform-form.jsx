@@ -57,6 +57,7 @@ const emptyForm = {
   categoryColor: "blue",
   countries: "",
   description: "",
+  shortDescription: "",
   hourlyRate: "",
   image: "",
   name: "",
@@ -117,6 +118,7 @@ function normalizePlatform(platform) {
     categoryColor: platform.categoryColor || "blue",
     countries: platform.countries || "",
     description: platform.description || "",
+    shortDescription: platform.shortDescription || "",
     hourlyRate: platform.hourlyRate || "",
     image: platform.image || "",
     name: platform.name || "",
@@ -160,7 +162,8 @@ function validateForm(form) {
     ["slug", "Slug is required."],
     ["websiteUrl", "Website URL is required."],
     ["image", "Website Image URL is required."],
-    ["description", "Description is required."],
+    ["shortDescription", "Short description is required."],
+    ["description", "Full description is required."],
   ];
 
   requiredFields.forEach(([field, message]) => {
@@ -237,6 +240,7 @@ function buildPayload(form) {
     categoryColor: form.categoryColor.trim(),
     countries: form.countries.trim(),
     description: form.description.trim(),
+    shortDescription: form.shortDescription.trim(),
     hourlyRate: form.hourlyRate.trim(),
     image: form.image.trim(),
     name: form.name.trim(),
@@ -270,6 +274,7 @@ function FieldError({ children }) {
 
 function TextInput({
   error,
+  helperText,
   id,
   label,
   required = false,
@@ -292,6 +297,11 @@ function TextInput({
         id={id}
         {...props}
       />
+      {helperText ? (
+        <p className="mt-1 text-xs leading-5 text-gray-500" id={`${id}-help`}>
+          {helperText}
+        </p>
+      ) : null}
       <FieldError>{error}</FieldError>
     </div>
   );
@@ -964,11 +974,26 @@ export default function PlatformForm({
               />
 
               <TextInput
-                error={errors.description}
-                id="description"
-                label="Description"
-                onChange={(event) => updateField("description", event.target.value)}
+                error={errors.shortDescription}
+                helperText="This text is displayed on homepage cards and platform previews."
+                id="shortDescription"
+                label="Short Description"
+                onChange={(event) =>
+                  updateField("shortDescription", event.target.value)
+                }
                 placeholder="Short platform overview..."
+                required
+                textarea
+                value={form.shortDescription}
+              />
+
+              <TextInput
+                error={errors.description}
+                helperText="This text is displayed only on the Platform Details page."
+                id="description"
+                label="Full Description"
+                onChange={(event) => updateField("description", event.target.value)}
+                placeholder="Full platform description..."
                 required
                 textarea
                 value={form.description}

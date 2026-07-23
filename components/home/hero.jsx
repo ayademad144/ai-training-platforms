@@ -54,12 +54,12 @@ export default function Hero() {
 
           <div className="relative overflow-hidden rounded-lg border border-border bg-muted">
             <Image
-              alt="Student learning online with study materials"
+              alt="AI platform discovery hub comparing global training and data annotation opportunities"
               className="h-full w-full object-cover"
               height={720}
               priority
               sizes="(min-width: 1024px) 42vw, 100vw"
-              src="https://learningmole.com/wp-content/uploads/2025/08/v2-zkoqd-ybdxn.jpg"
+              src="/images/hero/trainhub-ai-platform-network.jpg"
               width={900}
             />
           </div>

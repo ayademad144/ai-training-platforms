@@ -12,11 +12,6 @@ const nextConfig = {
         protocol: "https",
       },
       {
-        hostname: "learningmole.com",
-        pathname: "/wp-content/uploads/**",
-        protocol: "https",
-      },
-      {
         hostname:"www.onlc.com",
         pathname: "/blog/wp-content/uploads/**",
         protocol: "https",
