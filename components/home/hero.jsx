@@ -54,13 +54,13 @@ export default function Hero() {
 
           <div className="relative overflow-hidden rounded-lg border border-border bg-muted">
             <Image
-              alt="AI platform discovery hub comparing global training and data annotation opportunities"
+              alt="AI training team analyzing a connected artificial intelligence brain"
               className="h-full w-full object-cover"
-              height={720}
+              height={864}
               priority
               sizes="(min-width: 1024px) 42vw, 100vw"
-              src="/images/hero/trainhub-ai-platform-network.jpg"
-              width={900}
+              src="/images/hero/ai-training-network-brain.jpg"
+              width={1213}
             />
           </div>
         </div>
