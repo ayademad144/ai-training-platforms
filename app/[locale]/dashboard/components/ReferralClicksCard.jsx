@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import {
   Button,
   Card,
@@ -9,6 +11,8 @@ import {
 } from "@material-tailwind/react";
 
 export function ReferralClicksCard() {
+  const t = useTranslations("Dashboard");
+
   return (
     <Card className="mt-6 w-96">
       <CardBody>
@@ -28,17 +32,16 @@ export function ReferralClicksCard() {
         </svg>
 
         <Typography className="mb-2" color="blue-gray" variant="h5">
-          Referral Clicks
+          {t("referralClicksTitle")}
         </Typography>
         <Typography>
-          View referral link performance, total clicks, and the most clicked
-          platforms.
+          {t("referralClicksDescription")}
         </Typography>
       </CardBody>
       <CardFooter className="pt-0">
-        <a className="inline-block" href="/dashboard/referral-clicks">
+        <Link className="inline-block" href="/dashboard/referral-clicks">
           <Button className="flex items-center gap-2" size="sm" variant="text">
-            View Clicks
+            {t("viewClicks")}
             <svg
               className="h-4 w-4"
               fill="none"
@@ -54,7 +57,7 @@ export function ReferralClicksCard() {
               />
             </svg>
           </Button>
-        </a>
+        </Link>
       </CardFooter>
     </Card>
   );

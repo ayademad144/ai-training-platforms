@@ -1,12 +1,14 @@
 export const siteNavigation = [
-  { href: "/", label: "Home" },
-  { href: "/#featured-platforms", label: "Platforms" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
+  { href: "/", labelKey: "home" },
+  { href: "/#featured-platforms", labelKey: "platforms" },
+  { href: "/about", labelKey: "about" },
+  { href: "/contact", labelKey: "contact" },
 ];
 
 export function isActiveNavigationItem(pathname, href) {
-  return href === "/"
-    ? pathname === href
-    : pathname === href || pathname.startsWith(`${href}/`);
+  const hrefPathname = href.split("#")[0];
+
+  return hrefPathname === "/"
+    ? pathname === hrefPathname
+    : pathname === hrefPathname || pathname.startsWith(`${hrefPathname}/`);
 }

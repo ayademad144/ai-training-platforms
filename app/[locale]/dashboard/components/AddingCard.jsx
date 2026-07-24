@@ -1,4 +1,6 @@
 "use client";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import {
   Card,
   CardBody,
@@ -8,6 +10,8 @@ import {
 } from "@material-tailwind/react";
 
 export function AddingCard() {
+  const t = useTranslations("Dashboard");
+
   return (
     <Card className="mt-6 w-96">
       <CardBody>
@@ -27,16 +31,16 @@ export function AddingCard() {
         </svg>
 
         <Typography variant="h5" color="blue-gray" className="mb-2">
-          Adding Platform
+          {t("addingTitle")}
         </Typography>
         <Typography>
-         Add new AI training platforms to keep the directory growing and provide learners with more valuable resources.
+          {t("addingDescription")}
         </Typography>
       </CardBody>
       <CardFooter className="pt-0">
-        <a href="/dashboard/adding" className="inline-block">
+        <Link href="/dashboard/adding" className="inline-block">
           <Button size="sm" variant="text" className="flex items-center gap-2">
-            Go Adding
+            {t("goAdding")}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -52,7 +56,7 @@ export function AddingCard() {
               />
             </svg>
           </Button>
-        </a>
+        </Link>
       </CardFooter>
     </Card>
   );

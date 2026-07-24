@@ -1,9 +1,11 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 import PlatformCard from "./platform-card";
 
 export default function PlatformsGrid({ platforms = [] }) {
+  const t = useTranslations("Home");
   const [activeCategory, setActiveCategory] = useState("All");
   const platformCategories = useMemo(
     () => [
@@ -29,16 +31,15 @@ export default function PlatformsGrid({ platforms = [] }) {
             className="mb-3 font-display text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl"
             id="featured-platforms-title"
           >
-            Featured AI Training Platforms
+            {t("featuredPlatforms")}
           </h2>
           <p className="mx-auto max-w-xl text-lg text-muted-foreground">
-            Hand-reviewed platforms to help you find the right fit for your
-            skills and country.
+            {t("featuredPlatformsDescription")}
           </p>
         </div>
 
         <div
-          aria-label="Filter platforms by category"
+          aria-label={t("filterPlatforms")}
           className="mb-10 flex flex-wrap justify-center gap-2"
           role="group"
         >
@@ -57,7 +58,7 @@ export default function PlatformsGrid({ platforms = [] }) {
                 onClick={() => setActiveCategory(category)}
                 type="button"
               >
-                {category}
+                {category === "All" ? t("all") : category}
               </button>
             );
           })}

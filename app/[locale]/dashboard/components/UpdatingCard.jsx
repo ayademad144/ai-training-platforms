@@ -1,4 +1,6 @@
 "use client";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import {
   Card,
   CardBody,
@@ -8,6 +10,8 @@ import {
 } from "@material-tailwind/react";
 
 export function UpdatingCard() {
+  const t = useTranslations("Dashboard");
+
   return (
     <Card className="mt-6 w-96">
       <CardBody>
@@ -27,16 +31,16 @@ export function UpdatingCard() {
         </svg>
 
         <Typography variant="h5" color="blue-gray" className="mb-2">
-          Updating Platform
+          {t("updatingTitle")}
         </Typography>
         <Typography>
-          Keep platform information accurate and up to date. Edit existing entries to ensure learners always have access to the latest details.
+          {t("updatingDescription")}
         </Typography>
       </CardBody>
       <CardFooter className="pt-0">
-        <a href="/dashboard/updating" className="inline-block">
+        <Link href="/dashboard/updating" className="inline-block">
           <Button size="sm" variant="text" className="flex items-center gap-2">
-            go Update
+            {t("goUpdate")}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -52,7 +56,7 @@ export function UpdatingCard() {
               />
             </svg>
           </Button>
-        </a>
+        </Link>
       </CardFooter>
     </Card>
   );

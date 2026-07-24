@@ -1,8 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
 import Swal from "sweetalert2";
 import {
   Card,
@@ -19,6 +17,7 @@ import {
 } from "@heroicons/react/24/outline";
 
 import { createClient } from "@/lib/supabase/client";
+import { Link, useRouter } from "@/i18n/navigation";
 import {
   getAdminAccessMessage,
   getAuthenticatedAdmin,

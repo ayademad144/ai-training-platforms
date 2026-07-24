@@ -2,25 +2,25 @@ export const categories = [
   {
     icon: "globe",
     id: "platforms-listed",
-    label: "Platforms Listed",
+    labelKey: "platformsListed",
     value: "20+",
   },
   {
     icon: "book",
     id: "in-depth-guides",
-    label: "In-depth Guides",
+    labelKey: "inDepthGuides",
     value: "100+",
   },
   {
     icon: "refresh",
     id: "updated-frequently",
-    label: "Updated Frequently",
-    value: "Weekly",
+    labelKey: "updatedFrequently",
+    valueKey: "weekly",
   },
   {
     icon: "shield",
     id: "trusted-reviews",
-    label: "Trusted Reviews",
-    value: "Verified",
+    labelKey: "trustedReviews",
+    valueKey: "verified",
   },
 ];

@@ -1,5 +1,6 @@
 import Image from "next/image";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
 export const metadata = {
   description:
@@ -8,51 +9,37 @@ export const metadata = {
 };
 
 const supportCards = [
-  {
-    title: "Find part-time USD jobs",
-    text: "We collect AI training, data annotation, evaluation, and writing platforms so you can compare roles, payment methods, and beginner-friendly opportunities in one place.",
-  },
-  {
-    title: "Understand each platform",
-    text: "Before applying, you can learn what every platform usually asks for, what type of tasks you may see, and whether it fits your skills and available time.",
-  },
-  {
-    title: "Pass the test with confidence",
-    text: "Our guides focus on the real preparation steps: reading instructions carefully, practicing sample tasks, avoiding rushed answers, and improving the quality of your submissions.",
-  },
+  ["aboutCard1Title", "aboutCard1Text"],
+  ["aboutCard2Title", "aboutCard2Text"],
+  ["aboutCard3Title", "aboutCard3Text"],
 ];
 
-const testSteps = [
-  "Choose platforms that match your English level, subject knowledge, and schedule.",
-  "Read the guide for the platform before starting the qualification test.",
-  "Practice the task style first, then take the test slowly and check every answer.",
-  "Track your applications and keep improving until you land consistent part-time work.",
-];
+const testSteps = ["aboutStep1", "aboutStep2", "aboutStep3", "aboutStep4"];
 
 export default function AboutPage() {
+  const t = useTranslations("Marketing");
+  const homeT = useTranslations("Home");
+
   return (
     <main className="focus:outline-none" id="main-content" tabIndex={-1}>
       <section className="bg-white px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1fr_0.9fr] lg:items-center">
           <div>
             <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-blue-700">
-              About TrainHub AI
+              {t("aboutEyebrow")}
             </p>
             <h1 className="max-w-3xl font-display text-4xl font-semibold leading-tight text-foreground sm:text-5xl">
-              Find part-time AI work, earn in USD, and prepare for every test.
+              {t("aboutHeroTitle")}
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">
-              TrainHub AI is built for people who want flexible online work with
-              international platforms. We help you discover part-time AI
-              training jobs, compare the best options, and understand how to
-              pass the tests that usually decide whether you get accepted.
+              {t("aboutHeroDescription")}
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
                 className="inline-flex items-center justify-center rounded-md bg-foreground px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
                 href="/#featured-platforms"
               >
-                Explore platforms
+                {homeT("browsePlatforms")}
               </Link>
               
             </div>
@@ -60,7 +47,7 @@ export default function AboutPage() {
 
           <div className="relative overflow-hidden rounded-lg border border-border bg-muted">
             <Image
-              alt="Student learning online with study materials"
+              alt={t("aboutImageAlt")}
               className="h-full w-full object-cover"
               height={720}
               priority
@@ -74,13 +61,13 @@ export default function AboutPage() {
 
       <section className="border-y border-border bg-muted px-4 py-14 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-5 md:grid-cols-3">
-          {supportCards.map((card) => (
-            <article className="rounded-lg bg-white p-6" key={card.title}>
+          {supportCards.map(([titleKey, textKey]) => (
+            <article className="rounded-lg bg-white p-6" key={titleKey}>
               <h2 className="text-lg font-semibold text-foreground">
-                {card.title}
+                {t(titleKey)}
               </h2>
               <p className="mt-3 text-sm leading-7 text-muted-foreground">
-                {card.text}
+                {t(textKey)}
               </p>
             </article>
           ))}
@@ -91,22 +78,22 @@ export default function AboutPage() {
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.75fr_1fr]">
           <div>
             <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-blue-700">
-              How we help
+              {t("aboutHelpEyebrow")}
             </p>
             <h2 className="font-display text-3xl font-semibold text-foreground">
-              From searching to passing the test
+              {t("aboutHelpTitle")}
             </h2>
           </div>
           <ol className="grid gap-4 sm:grid-cols-2">
-            {testSteps.map((step, index) => (
+            {testSteps.map((stepKey, index) => (
               <li
                 className="rounded-lg border border-border p-5 text-sm leading-7 text-muted-foreground"
-                key={step}
+                key={stepKey}
               >
                 <span className="mb-3 block text-xs font-bold uppercase tracking-widest text-foreground">
-                  Step {index + 1}
+                  {t("step", { number: index + 1 })}
                 </span>
-                {step}
+                {t(stepKey)}
               </li>
             ))}
           </ol>

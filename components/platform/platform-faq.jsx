@@ -2,8 +2,11 @@ import {
   ChevronRightIcon,
   QuestionMarkCircleIcon,
 } from "@heroicons/react/24/outline";
+import { useTranslations } from "next-intl";
 
 export default function PlatformFaq({ items = [] }) {
+  const t = useTranslations("Platform");
+
   if (items.length === 0) {
     return null;
   }
@@ -14,7 +17,7 @@ export default function PlatformFaq({ items = [] }) {
         className="mb-4 font-display text-xl font-bold text-foreground"
         id="platform-faq-title"
       >
-        Frequently Asked Questions
+        {t("faq")}
       </h2>
       <div className="space-y-2">
         {items.map((item, index) => (
@@ -22,7 +25,7 @@ export default function PlatformFaq({ items = [] }) {
             className="group overflow-hidden rounded-xl border border-border bg-white"
             key={`${item.question}-${index}`}
           >
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-left text-sm font-medium text-foreground transition-colors hover:bg-gray-50 [&::-webkit-details-marker]:hidden">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-start text-sm font-medium text-foreground transition-colors hover:bg-gray-50 [&::-webkit-details-marker]:hidden">
               <span className="flex items-center gap-3">
                 <QuestionMarkCircleIcon
                   aria-hidden="true"

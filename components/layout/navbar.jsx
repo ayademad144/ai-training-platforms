@@ -5,41 +5,46 @@ import {
   GlobeAltIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import NavigationLinks from "./navigation-links";
 
 const mobileNavigationId = "primary-navigation";
 
 function LanguageButton({ className, language, onToggle }) {
+  const t = useTranslations("Navigation");
+
   return (
     <button
-      aria-label={`Switch language display to ${
-        language === "en" ? "Arabic" : "English"
-      }`}
+      aria-label={t("switchTo")}
       aria-pressed={language === "ar"}
       className={className}
       onClick={onToggle}
       type="button"
     >
       <GlobeAltIcon aria-hidden="true" className="size-[13px]" />
-      {language === "en" ? "English" : "العربية"}
+      {t("currentLanguage")}
     </button>
   );
 }
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const locale = useLocale();
+  const t = useTranslations("Navigation");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [language, setLanguage] = useState("en");
   const menuToggleRef = useRef(null);
 
   function toggleLanguage() {
-    setLanguage((currentLanguage) =>
-      currentLanguage === "en" ? "ar" : "en",
-    );
+    const nextLocale = locale === "en" ? "ar" : "en";
+    const hash = window.location.hash || "";
+
+    document.cookie = `NEXT_LOCALE=${nextLocale}; path=/; max-age=31536000; SameSite=Lax`;
+    router.replace(`${pathname}${hash}`, { locale: nextLocale });
+    setIsMenuOpen(false);
   }
 
   useEffect(() => {
@@ -61,12 +66,12 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-white/95 backdrop-blur-sm">
       <nav
-        aria-label="Primary navigation"
+        aria-label={t("primary")}
         className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
       >
         <div className="flex h-16 items-center justify-between">
           <Link
-            aria-label="AI Training Models home"
+            aria-label={t("homeAria")}
             className="flex items-center gap-2.5"
             href="/"
             onClick={() => setIsMenuOpen(false)}
@@ -80,7 +85,7 @@ export default function Navbar() {
               width={32}
             />
             <span className="hidden text-sm font-semibold text-foreground sm:block">
-              Train Hub Ai
+              Train Hub AI
             </span>
           </Link>
 
@@ -91,13 +96,13 @@ export default function Navbar() {
           <div className="flex items-center gap-2">
             <LanguageButton
               className="hidden items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground sm:flex"
-              language={language}
+              language={locale}
               onToggle={toggleLanguage}
             />
             <button
               aria-controls={mobileNavigationId}
               aria-expanded={isMenuOpen}
-              aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-label={isMenuOpen ? t("closeMenu") : t("openMenu")}
               className="rounded-md p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:hidden"
               onClick={() => setIsMenuOpen((isOpen) => !isOpen)}
               ref={menuToggleRef}
@@ -125,7 +130,7 @@ export default function Navbar() {
             <div className="px-4 pt-1">
               <LanguageButton
                 className="flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs font-medium text-muted-foreground"
-                language={language}
+                language={locale}
                 onToggle={toggleLanguage}
               />
             </div>

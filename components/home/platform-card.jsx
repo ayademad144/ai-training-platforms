@@ -7,9 +7,13 @@ import {
 import PlatformLogo from "@/components/platform/platform-logo";
 import PlatformRating from "@/components/platform/platform-rating";
 import { getCategoryClassName } from "@/components/platform/platform-visuals";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
 export default function PlatformCard({ platform }) {
+  const t = useTranslations("Platform");
+  const homeT = useTranslations("Home");
+
   return (
     <article className="relative flex flex-col gap-4 rounded-xl border border-border bg-white p-5 transition-shadow hover:shadow-md">
       <div className="flex items-start justify-between gap-3">
@@ -42,7 +46,7 @@ export default function PlatformCard({ platform }) {
       <dl className="space-y-1.5 text-xs text-muted-foreground">
         <div className="flex items-center gap-2">
           <MapPinIcon aria-hidden="true" className="size-[11px] shrink-0" />
-          <dt className="sr-only">Countries</dt>
+          <dt className="sr-only">{t("countries")}</dt>
           <dd>{platform.countries}</dd>
         </div>
         <div className="flex items-center gap-2">
@@ -50,7 +54,7 @@ export default function PlatformCard({ platform }) {
             aria-hidden="true"
             className="size-[11px] shrink-0"
           />
-          <dt className="sr-only">Payment methods</dt>
+          <dt className="sr-only">{t("paymentMethods")}</dt>
           <dd>{platform.payment.join(" · ")}</dd>
         </div>
         <div className="flex items-center gap-2">
@@ -58,18 +62,18 @@ export default function PlatformCard({ platform }) {
             aria-hidden="true"
             className="size-[11px] shrink-0"
           />
-          <dt className="sr-only">Hourly rate</dt>
+          <dt className="sr-only">{t("hourlyRate")}</dt>
           <dd>{platform.hourlyRate}</dd>
         </div>
       </dl>
 
       <Link
-        aria-label={`View ${platform.name} details`}
+        aria-label={`${homeT("viewPlatform")}: ${platform.name}`}
         className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-border py-2.5 text-sm font-medium text-muted-foreground transition-colors after:absolute after:inset-0 after:rounded-xl after:content-[''] hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
         href={`/platform/${platform.slug}`}
       >
-        View Details
-        <ChevronRightIcon aria-hidden="true" className="size-[13px]" />
+        {homeT("viewPlatform")}
+        <ChevronRightIcon aria-hidden="true" className="size-[13px] rtl:rotate-180" />
       </Link>
     </article>
   );

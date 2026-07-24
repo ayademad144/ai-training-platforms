@@ -1,6 +1,9 @@
 import { CreditCardIcon } from "@heroicons/react/24/outline";
+import { useTranslations } from "next-intl";
 
 export default function PlatformPayment({ methods = [] }) {
+  const t = useTranslations("Platform");
+
   if (methods.length === 0) {
     return null;
   }
@@ -11,7 +14,7 @@ export default function PlatformPayment({ methods = [] }) {
         className="mb-4 font-display text-xl font-bold text-foreground"
         id="platform-payment-title"
       >
-        Payment Methods
+        {t("paymentMethods")}
       </h2>
       <ul className="flex flex-wrap gap-3">
         {methods.map((method) => (

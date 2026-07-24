@@ -3,13 +3,16 @@ import {
   CurrencyDollarIcon,
   MapPinIcon,
 } from "@heroicons/react/24/outline";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import PlatformActions from "./platform-actions";
 import PlatformLogo from "./platform-logo";
 import PlatformRating from "./platform-rating";
 import { getCategoryClassName } from "./platform-visuals";
 
 export default function PlatformHero({ platform }) {
+  const t = useTranslations("Navigation");
+
   return (
     <>
       <div className="border-b border-border bg-gray-50">
@@ -19,16 +22,16 @@ export default function PlatformHero({ platform }) {
             className="flex items-center gap-1.5 text-xs text-muted-foreground"
           >
             <Link className="transition-colors hover:text-foreground" href="/">
-              Home
+              {t("home")}
             </Link>
-            <ChevronRightIcon aria-hidden="true" className="size-[11px]" />
+            <ChevronRightIcon aria-hidden="true" className="size-[11px] rtl:rotate-180" />
             <Link
               className="transition-colors hover:text-foreground"
               href="/#featured-platforms-title"
             >
-              Platforms
+              {t("platforms")}
             </Link>
-            <ChevronRightIcon aria-hidden="true" className="size-[11px]" />
+            <ChevronRightIcon aria-hidden="true" className="size-[11px] rtl:rotate-180" />
             <span className="truncate font-medium text-foreground">
               {platform.name}
             </span>

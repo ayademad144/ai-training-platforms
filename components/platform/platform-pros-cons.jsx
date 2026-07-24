@@ -4,8 +4,11 @@ import {
   HandThumbUpIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+import { useTranslations } from "next-intl";
 
 export default function PlatformProsCons({ cons = [], pros = [] }) {
+  const t = useTranslations("Platform");
+
   if (pros.length === 0 && cons.length === 0) {
     return null;
   }
@@ -16,7 +19,7 @@ export default function PlatformProsCons({ cons = [], pros = [] }) {
         className="mb-4 font-display text-xl font-bold text-foreground"
         id="platform-pros-cons-title"
       >
-        Pros &amp; Cons
+        {t("prosAndCons")}
       </h2>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {pros.length > 0 ? (
@@ -26,7 +29,9 @@ export default function PlatformProsCons({ cons = [], pros = [] }) {
                 aria-hidden="true"
                 className="size-[13px] text-emerald-600"
               />
-              <h3 className="text-sm font-semibold text-emerald-800">Pros</h3>
+              <h3 className="text-sm font-semibold text-emerald-800">
+                {t("pros")}
+              </h3>
             </div>
             <ul className="space-y-2.5">
               {pros.map((pro, index) => (
@@ -52,7 +57,9 @@ export default function PlatformProsCons({ cons = [], pros = [] }) {
                 aria-hidden="true"
                 className="size-[13px] text-red-600"
               />
-              <h3 className="text-sm font-semibold text-red-800">Cons</h3>
+              <h3 className="text-sm font-semibold text-red-800">
+                {t("cons")}
+              </h3>
             </div>
             <ul className="space-y-2.5">
               {cons.map((con, index) => (

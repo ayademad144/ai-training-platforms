@@ -1,7 +1,10 @@
 import { features } from "@/data/features";
+import { useTranslations } from "next-intl";
 import FeatureCard from "./feature-card";
 
 export default function Features() {
+  const t = useTranslations("Home");
+
   return (
     <section
       aria-labelledby="features-title"
@@ -13,10 +16,10 @@ export default function Features() {
             className="mb-3 font-display text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl"
             id="features-title"
           >
-            Why Choose This Website
+            {t("whyChooseTitle")}
           </h2>
           <p className="mx-auto max-w-md text-lg text-muted-foreground">
-            We do the research so you can focus on earning.
+            {t("whyChooseDescription")}
           </p>
         </div>
 

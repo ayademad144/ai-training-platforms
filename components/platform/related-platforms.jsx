@@ -1,7 +1,10 @@
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import PlatformLogo from "./platform-logo";
 
 export default function RelatedPlatforms({ platforms = [] }) {
+  const t = useTranslations("Platform");
+
   if (platforms.length === 0) {
     return null;
   }
@@ -15,12 +18,12 @@ export default function RelatedPlatforms({ platforms = [] }) {
         className="mb-4 text-sm font-semibold text-foreground"
         id="related-platforms-title"
       >
-        Similar Platforms
+        {t("relatedPlatforms")}
       </h2>
       <div className="space-y-2.5">
         {platforms.map((platform) => (
           <Link
-            className="flex items-center gap-3 rounded-lg border border-border bg-gray-50 p-3 text-left transition-colors hover:border-gray-300 hover:bg-muted"
+            className="flex items-center gap-3 rounded-lg border border-border bg-gray-50 p-3 text-start transition-colors hover:border-gray-300 hover:bg-muted"
             href={`/platform/${platform.slug}`}
             key={platform.id}
           >

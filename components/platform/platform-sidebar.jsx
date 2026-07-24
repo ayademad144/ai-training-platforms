@@ -5,39 +5,44 @@ import {
   StarIcon,
   TagIcon,
 } from "@heroicons/react/24/outline";
+import { useTranslations } from "next-intl";
 import RelatedPlatforms from "./related-platforms";
 
 export default function PlatformSidebar({ platform, relatedPlatforms }) {
+  const t = useTranslations("Platform");
   const quickInfoRows = [
     {
       Icon: TagIcon,
-      label: "Category",
+      label: t("category"),
       value: platform.category,
     },
     {
       Icon: StarIcon,
-      label: "Rating",
-      value: `${platform.rating.toFixed(1)} out of 5`,
+      label: t("rating"),
+      value: t("ratingValue", { rating: platform.rating.toFixed(1) }),
     },
     {
       Icon: CurrencyDollarIcon,
-      label: "Hourly Rate",
+      label: t("hourlyRate"),
       value: platform.hourlyRate,
     },
     {
       Icon: GlobeAltIcon,
-      label: "Countries",
+      label: t("countries"),
       value: platform.countries,
     },
     {
       Icon: CreditCardIcon,
-      label: "Payment",
+      label: t("payment"),
       value: platform.payment.join(", "),
     },
   ].filter((row) => row.value);
 
   return (
-    <aside className="space-y-5" aria-label={`${platform.name} quick information`}>
+    <aside
+      className="space-y-5"
+      aria-label={t("quickInfoAria", { name: platform.name })}
+    >
       {quickInfoRows.length > 0 ? (
         <section
           aria-labelledby="platform-quick-info-title"
@@ -47,7 +52,7 @@ export default function PlatformSidebar({ platform, relatedPlatforms }) {
             className="mb-4 text-sm font-semibold text-foreground"
             id="platform-quick-info-title"
           >
-            Quick Info
+            {t("quickInfo")}
           </h2>
           <dl className="space-y-4">
             {quickInfoRows.map(({ Icon, label, value }) => (

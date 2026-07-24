@@ -4,6 +4,7 @@ import {
   ShieldCheckIcon,
   UserGroupIcon,
 } from "@heroicons/react/24/outline";
+import { useTranslations } from "next-intl";
 
 const featureIcons = {
   book: BookOpenIcon,
@@ -13,6 +14,7 @@ const featureIcons = {
 };
 
 export default function FeatureCard({ feature }) {
+  const t = useTranslations("Features");
   const Icon = featureIcons[feature.icon];
 
   return (
@@ -21,10 +23,10 @@ export default function FeatureCard({ feature }) {
         <Icon aria-hidden="true" className="size-[19px] text-blue-600" />
       </span>
       <h3 className="mb-2 text-sm font-semibold text-foreground">
-        {feature.title}
+        {t(feature.titleKey)}
       </h3>
       <p className="text-sm leading-relaxed text-muted-foreground">
-        {feature.description}
+        {t(feature.descriptionKey)}
       </p>
     </li>
   );

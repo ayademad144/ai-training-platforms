@@ -1,18 +1,20 @@
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { isActiveNavigationItem, siteNavigation } from "./site-navigation";
 
 const desktopLinkClassName =
   "rounded-md px-3.5 py-1.5 text-sm font-medium transition-colors";
 const mobileLinkClassName =
-  "block w-full rounded-md px-4 py-2.5 text-left text-sm font-medium transition-colors";
+  "block w-full rounded-md px-4 py-2.5 text-start text-sm font-medium transition-colors";
 const activeLinkClassName = "bg-muted text-foreground";
 const inactiveLinkClassName =
   "text-muted-foreground hover:bg-muted hover:text-foreground";
 
 export default function NavigationLinks({ mobile = false, onNavigate, pathname }) {
+  const t = useTranslations("Navigation");
   const baseClassName = mobile ? mobileLinkClassName : desktopLinkClassName;
 
-  return siteNavigation.map(({ href, label }) => {
+  return siteNavigation.map(({ href, labelKey }) => {
     const isActive = isActiveNavigationItem(pathname, href);
 
     return (
@@ -26,7 +28,7 @@ export default function NavigationLinks({ mobile = false, onNavigate, pathname }
         onClick={onNavigate}
         prefetch={false}
       >
-        {label}
+        {t(labelKey)}
       </Link>
     );
   });

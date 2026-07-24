@@ -1,5 +1,6 @@
+import { useTranslations } from "next-intl";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
 export const metadata = {
   description:
@@ -9,43 +10,40 @@ export const metadata = {
 };
 
 export default function Hero() {
+  const t = useTranslations("Home");
+
   return (
     <main className="focus:outline-none" id="main-content" tabIndex={-1}>
       <section className="bg-white px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1fr_0.9fr] lg:items-center">
           <div>
             <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-blue-700">
-              Discover AI Training Platforms
+              {t("eyebrow")}
             </p>
             <h1 className="max-w-3xl font-display text-4xl font-semibold leading-tight text-foreground sm:text-5xl">
-              Find the Best AI <span className="text-blue-700">Training </span>
-              Platforms & Remote AI Jobs
+              {t("heroTitle")}
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground ">
-              TrainHub AI helps you discover legitimate AI training platforms,
-              remote AI jobs, and data annotation opportunities. Compare
-              platform reviews, exam requirements, payment methods, hourly
-              rates, and application guides—all in one place.
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">
+              {t("heroDescription")}
             </p>
-            <div className="mt-8 flex  gap-8 sm:flex-row ">
+            <div className="mt-8 flex gap-8 sm:flex-row">
               <Link
-                className="inline-flex items-center justify-center rounded-md  px-5 py-3 text-sm font-semibold bg-foreground text-white transition-colors hover:bg-blue-700"
+                className="inline-flex items-center justify-center gap-2 rounded-md bg-foreground px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
                 href="/#featured-platforms"
               >
-                Explore platforms{" "}  
-
+                {t("browsePlatforms")}
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
+                  className="size-5 rtl:rotate-180"
                   fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
                   stroke="currentColor"
-                  className="size-5"
+                  strokeWidth={1.5}
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
+                    d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
                   />
                 </svg>
               </Link>
@@ -54,7 +52,7 @@ export default function Hero() {
 
           <div className="relative overflow-hidden rounded-lg border border-border bg-muted">
             <Image
-              alt="AI training team analyzing a connected artificial intelligence brain"
+              alt={t("heroImageAlt")}
               className="h-full w-full object-cover"
               height={864}
               priority

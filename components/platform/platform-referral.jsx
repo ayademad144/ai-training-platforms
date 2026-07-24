@@ -1,6 +1,8 @@
+import { useTranslations } from "next-intl";
 import PlatformActions from "./platform-actions";
 
 export default function PlatformReferral({ platform }) {
+  const t = useTranslations("Platform");
   const hasReferral = Boolean(platform.allProjectsReferralLink);
 
   if (!platform.websiteUrl && !hasReferral) {
@@ -16,18 +18,18 @@ export default function PlatformReferral({ platform }) {
         className="mb-2 font-display text-xl font-bold text-foreground"
         id="platform-referral-title"
       >
-        Ready to Join {platform.name}?
+        {t("readyToJoin", { name: platform.name })}
       </h2>
       <p className="mb-6 text-sm text-muted-foreground">
         {hasReferral
-          ? "Choose the all projects referral link or visit the official platform website."
-          : "Visit the official platform website to review current opportunities."}
+          ? t("chooseReferral")
+          : t("visitOfficial")}
       </p>
       <PlatformActions
         centered
         allProjectsReferralLink={platform.allProjectsReferralLink}
         platformSlug={platform.slug}
-        websiteLabel={`Visit ${platform.name}`}
+        websiteLabel={t("visitWebsite")}
         websiteUrl={platform.websiteUrl}
       />
     </section>

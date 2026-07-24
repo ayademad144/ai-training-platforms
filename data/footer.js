@@ -1,31 +1,29 @@
 export const footerBrand = {
-  description:
-    "The most comprehensive directory for AI training, data annotation, and remote AI work platforms.",
+  descriptionKey: "description",
   name: "Train Hub AI",
 };
 
 export const footerColumns = [
   {
-    heading: "Resources",
+    headingKey: "resources",
     id: "resources",
     links: [
-      { href: "/#featured-platforms", label: "Getting Started" },
-      { href: "/#latest-guides", label: "Latest Guides" },
-      { href: "/faq", label: "FAQ" },
+      { href: "/#featured-platforms", labelKey: "gettingStarted" },
+      { href: "/#latest-guides", labelKey: "latestGuides" },
+      { href: "/faq", labelKey: "faq" },
     ],
   },
   {
-    heading: "Company",
+    headingKey: "company",
     id: "company",
     links: [
-      { href: "/about", label: "About" },
-      { href: "/contact", label: "Contact" },
-      { href: "/privacy", label: "Privacy Policy" },
-      
+      { href: "/about", labelKey: "about" },
+      { href: "/contact", labelKey: "contact" },
+      { href: "/privacy", labelKey: "privacy" },
     ],
   },
 ];
 
 export const socialLabels = ["Twitter", "YouTube", "Telegram", "Discord"];
 
-export const copyright = "© 2026 Train Hub AI. All rights reserved.";
+export const copyrightKey = "copyright";

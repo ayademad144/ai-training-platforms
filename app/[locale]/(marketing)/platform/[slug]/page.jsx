@@ -10,6 +10,7 @@ import {
   getCachedPlatformBySlug,
   getCachedPlatformPageData,
 } from "@/lib/supabase/platforms";
+import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 
 export const revalidate = 300;
@@ -47,6 +48,7 @@ export async function generateMetadata({ params }) {
 
 export default async function PlatformDetailsPage({ params }) {
   const { slug } = await params;
+  const t = await getTranslations("Platform");
   const { platform, relatedPlatforms } = await getCachedPlatformPageData(slug);
 
   if (!platform) {
@@ -71,12 +73,12 @@ export default async function PlatformDetailsPage({ params }) {
               />
               <PlatformListSection
                 items={platform.requirements}
-                title="Requirements"
+                title={t("requirements")}
               />
               <PlatformListSection
                 id="passing-process"
                 items={platform.passing}
-                title="Passing / Acceptance Process"
+                title={t("passingProcess")}
                 variant="steps"
               />
               <PlatformPayment methods={platform.payment} />

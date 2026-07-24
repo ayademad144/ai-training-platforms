@@ -4,6 +4,7 @@ import {
   GlobeAltIcon,
   ShieldCheckIcon,
 } from "@heroicons/react/24/outline";
+import { useTranslations } from "next-intl";
 
 const categoryIcons = {
   book: BookOpenIcon,
@@ -13,6 +14,7 @@ const categoryIcons = {
 };
 
 export default function CategoryCard({ category }) {
+  const t = useTranslations("Categories");
   const Icon = categoryIcons[category.icon];
 
   return (
@@ -22,9 +24,11 @@ export default function CategoryCard({ category }) {
       </span>
       <span>
         <strong className="mb-0.5 block text-base font-bold leading-none text-foreground">
-          {category.value}
+          {category.valueKey ? t(category.valueKey) : category.value}
         </strong>
-        <span className="text-xs text-muted-foreground">{category.label}</span>
+        <span className="text-xs text-muted-foreground">
+          {t(category.labelKey)}
+        </span>
       </span>
     </li>
   );

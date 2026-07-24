@@ -1,7 +1,10 @@
 import { guides } from "@/data/guides";
+import { useTranslations } from "next-intl";
 import GuideCard from "./guide-card";
 
 export default function LatestGuides({ platforms = [] }) {
+  const t = useTranslations("Home");
+
   const platformsBySlug = new Map(
     platforms.map((platform) => [platform.slug, platform]),
   );
@@ -38,13 +41,12 @@ export default function LatestGuides({ platforms = [] }) {
           <div>
             <h2
               className="mb-2 font-display text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl"
-              id="latest-guides-title"
-            >
-              Platform Assessment Guides
+            id="latest-guides-title"
+          >
+              {t("latestGuides")}
             </h2>
             <p className="text-lg text-muted-foreground">
-              Jump directly to each platform&apos;s passing and acceptance
-              checklist.
+              {t("latestGuidesDescription")}
             </p>
           </div>
         </div>

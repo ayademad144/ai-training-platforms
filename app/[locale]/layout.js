@@ -1,9 +1,13 @@
 import { siteConfig } from "@/lib/site-config";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Analytics } from "@vercel/analytics/next"
-import "./globals.css";
-import { inter, plusJakartaSans } from "./fonts";
+import { Analytics } from "@vercel/analytics/next";
+import { NextIntlClientProvider } from "next-intl";
+import { notFound } from "next/navigation";
+import "../globals.css";
+import { inter, plusJakartaSans } from "../fonts";
 import NavBar from "@/components/layout/navbar";
+import { isLocale, locales } from "@/i18n/routing";
+
 export const metadata = {
   alternates: {
     canonical: "/",
@@ -67,17 +71,32 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
+
+export default async function RootLayout({ children, params }) {
+  const { locale } = await params;
+
+  if (!isLocale(locale)) {
+    notFound();
+  }
+
+  const direction = locale === "ar" ? "rtl" : "ltr";
+
   return (
     <html
-      lang="en"
+      lang={locale}
+      dir={direction}
       className={`${inter.variable} ${plusJakartaSans.variable} h-full`}
     >
-      <body className="min-h-full flex flex-col">
-        <NavBar />
-        {children}
-        <SpeedInsights />
-        <Analytics />
+      <body className="flex min-h-full flex-col">
+        <NextIntlClientProvider>
+          <NavBar />
+          {children}
+          <SpeedInsights />
+          <Analytics />
+        </NextIntlClientProvider>
       </body>
     </html>
   );

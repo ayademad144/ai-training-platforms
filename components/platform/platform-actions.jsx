@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
+import { useTranslations } from "next-intl";
 
 export function trackReferralClick({
   platformSlug,
@@ -41,9 +42,10 @@ export default function PlatformActions({
   platformSlug,
   websiteUrl,
 }) {
+  const t = useTranslations("Platform");
   const allProjectsReferral = allProjectsReferralLink
     ? {
-        label: "All Projects Referral Link",
+        label: t("allProjectsReferral"),
         url: allProjectsReferralLink,
       }
     : null;
@@ -84,7 +86,7 @@ export default function PlatformActions({
           rel="noopener noreferrer sponsored"
           target="_blank"
         >
-          All Projects Referral Link
+          {t("allProjectsReferral")}
           <ArrowTopRightOnSquareIcon aria-hidden="true" className="size-[13px]" />
         </a>
       ) : null}

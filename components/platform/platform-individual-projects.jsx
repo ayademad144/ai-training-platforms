@@ -1,12 +1,15 @@
 "use client";
 
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
+import { useTranslations } from "next-intl";
 import { trackReferralClick } from "./platform-actions";
 
 export default function PlatformIndividualProjects({
   platformSlug,
   projects = [],
 }) {
+  const t = useTranslations("Platform");
+
   if (projects.length === 0) {
     return null;
   }
@@ -17,7 +20,7 @@ export default function PlatformIndividualProjects({
         className="mb-4 font-display text-xl font-bold text-foreground"
         id="platform-individual-projects-title"
       >
-        Individual Projects
+        {t("individualProjects")}
       </h2>
       <div className="grid gap-3 sm:grid-cols-2">
         {projects.map((project, index) => (
